@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>MELU</title>
+<meta name="description" content="MELU — ambient / pop / indie / rock. Where visuals meet sound." />
+
+<!-- ============================================================
+     MELU — ambient galaxy landing page
+     Single file. No build step. Drop into a GitHub repo and point
+     Cloudflare Pages at it (Framework preset: None, build command:
+     blank, output dir: /). It just serves this file.
+
+     >>> ADD YOUR MUSIC: edit the TRACKS array near the bottom <<<
+     Put your mp3s in an /audio folder next to this file, e.g.
+       /audio/01.mp3, /audio/02.mp3 ...
+     Then set the src + title for each track. That's the only edit
+     you need to make.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#080605;
+    --ink:#0d0a08;
+    --amber:#e0a25e;
+    --amber-soft:#c98a4c;
+    --pink:#e7b3d2;
+    --pink-soft:#d99fc4;
+    --blue:#8aa6cf;
+    --blue-soft:#728fbd;
+    --cream:#f2e8d6;
+    --dust:#bfb09a;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html,body{ height:100%; }
+
+  body{
+    background:var(--black);
+    color:var(--cream);
+    font-family:'Jost', sans-serif;
+    overflow:hidden;
+    position:relative;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* the animated sky lives here */
+  #sky{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+    z-index:0;
+  }
+
+  /* vignette + grain on top of the canvas for depth */
+  .veil{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+      radial-gradient(120% 90% at 50% 42%, rgba(8,6,5,0) 38%, rgba(8,6,5,0.55) 100%);
+  }
+  .grain{
+    position:fixed;
+    inset:-50%;
+    z-index:2;
+    pointer-events:none;
+    opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 6s steps(6) infinite;
+  }
+  @keyframes grain{
+    0%{ transform:translate(0,0); }
+    20%{ transform:translate(-4%,3%); }
+    40%{ transform:translate(3%,-5%); }
+    60%{ transform:translate(-3%,4%); }
+    80%{ transform:translate(5%,-2%); }
+    100%{ transform:translate(0,0); }
+  }
+
+  /* main stage */
+  .stage{
+    position:relative;
+    z-index:3;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    text-align:center;
+  }
+
+  .wordmark{
+    width:clamp(240px, 46vw, 520px);
+    height:auto;
+    display:block;
+    filter:
+      drop-shadow(0 0 26px rgba(224,162,94,0.30))
+      drop-shadow(0 0 64px rgba(231,179,210,0.16));
+    opacity:0;
+    animation:rise 1.8s cubic-bezier(.16,.84,.34,1) 0.2s forwards;
+  }
+
+  .tagline{
+    margin-top:18px;
+    font-weight:300;
+    font-size:clamp(11px, 2.4vw, 13px);
+    letter-spacing:0.42em;
+    text-indent:0.42em;
+    text-transform:uppercase;
+    color:rgba(242,232,214,0.62);
+    opacity:0;
+    animation:rise 1.8s cubic-bezier(.16,.84,.34,1) 0.55s forwards;
+  }
+
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(18px); filter:blur(6px); }
+    to{ opacity:1; transform:translateY(0); filter:blur(0); }
+  }
+
+  /* ---- player ---- */
+  .player{
+    margin-top:clamp(40px, 7vh, 72px);
+    width:min(420px, 86vw);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:22px;
+    opacity:0;
+    animation:rise 1.8s cubic-bezier(.16,.84,.34,1) 0.9s forwards;
+  }
+
+  .eq{
+    display:flex;
+    align-items:flex-end;
+    gap:4px;
+    height:18px;
+  }
+  .eq span{
+    width:3px;
+    height:4px;
+    border-radius:2px;
+    background:linear-gradient(var(--amber), var(--pink));
+    opacity:0.5;
+  }
+  .player.playing .eq span{
+    animation:bounce 1.1s ease-in-out infinite;
+  }
+  .player.playing .eq span:nth-child(2){ animation-delay:.18s; }
+  .player.playing .eq span:nth-child(3){ animation-delay:.36s; }
+  .player.playing .eq span:nth-child(4){ animation-delay:.10s; }
+  .player.playing .eq span:nth-child(5){ animation-delay:.48s; }
+  @keyframes bounce{
+    0%,100%{ height:4px; opacity:0.45; }
+    50%{ height:18px; opacity:0.95; }
+  }
+
+  .track-meta{
+    min-height:30px;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+  }
+  .now-label{
+    font-size:10px;
+    letter-spacing:0.4em;
+    text-indent:0.4em;
+    text-transform:uppercase;
+    color:rgba(242,232,214,0.4);
+  }
+  .track-title{
+    font-family:'Jost', sans-serif;
+    font-weight:400;
+    font-size:clamp(15px, 3.6vw, 19px);
+    letter-spacing:0.22em;
+    text-indent:0.22em;
+    text-transform:uppercase;
+    color:var(--cream);
+    transition:opacity .35s ease;
+  }
+
+  .controls{
+    display:flex;
+    align-items:center;
+    gap:30px;
+  }
+  .ctrl{
+    background:none;
+    border:1px solid rgba(242,232,214,0.18);
+    color:var(--cream);
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    transition:border-color .3s ease, transform .25s ease, box-shadow .3s ease, background .3s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ctrl svg{ width:22px; height:22px; fill:var(--cream); }
+  .ctrl:hover{
+    border-color:rgba(224,162,94,0.6);
+    box-shadow:0 0 28px rgba(224,162,94,0.22);
+  }
+  .ctrl:active{ transform:scale(0.94); }
+
+  .ctrl.play{
+    width:78px; height:78px;
+    border-color:rgba(224,162,94,0.45);
+    background:radial-gradient(circle at 50% 40%, rgba(224,162,94,0.12), rgba(8,6,5,0) 70%);
+  }
+  .ctrl.play svg{ width:26px; height:26px; }
+  .ctrl.play:hover{
+    border-color:rgba(231,179,210,0.7);
+    box-shadow:0 0 40px rgba(231,179,210,0.25);
+  }
+
+  .next svg{ width:20px; height:20px; }
+
+  footer{
+    position:fixed;
+    bottom:18px;
+    left:0; right:0;
+    z-index:3;
+    text-align:center;
+    font-size:10px;
+    letter-spacing:0.34em;
+    text-indent:0.34em;
+    text-transform:uppercase;
+    color:rgba(242,232,214,0.28);
+    opacity:0;
+    animation:rise 2s ease 1.4s forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .grain, .player.playing .eq span{ animation:none; }
+    .wordmark,.tagline,.player,footer{ animation-duration:.01s; opacity:1; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="sky"></canvas>
+<div class="veil"></div>
+<div class="grain"></div>
+
+<main class="stage">
+  <img class="wordmark" src="melu-logo.png" alt="MELU" />
+  <p class="tagline">When Noise Becomes</p>
+
+  <section class="player" id="player" aria-label="MELU music player">
+    <div class="eq" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="track-meta">
+      <span class="now-label">now playing</span>
+      <span class="track-title" id="trackTitle">—</span>
+    </div>
+
+    <div class="controls">
+      <button class="ctrl play" id="playBtn" aria-label="Play">
+        <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button class="ctrl next" id="nextBtn" aria-label="Next track">
+        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+    </div>
+  </section>
+</main>
+
+<footer>MELU &nbsp;·&nbsp; <span id="year"></span></footer>
+
+<audio id="audio" preload="auto"></audio>
+
+<script>
+/* =====================================================================
+   1) YOUR PLAYLIST  — edit this list. Loops forever.
+   Put mp3s in an /audio folder beside this file and match the names.
+   ===================================================================== */
+const TRACKS = [
+  { title: "Track One",   src: "audio/01.mp3" },
+  { title: "Track Two",   src: "audio/02.mp3" },
+  { title: "Track Three", src: "audio/03.mp3" },
+  { title: "Track Four",  src: "audio/04.mp3" },
+  { title: "Track Five",  src: "audio/05.mp3" }
+];
+
+/* =====================================================================
+   2) PLAYER
+   ===================================================================== */
+const audio   = document.getElementById('audio');
+const playBtn = document.getElementById('playBtn');
+const nextBtn = document.getElementById('nextBtn');
+const playIcon= document.getElementById('playIcon');
+const titleEl = document.getElementById('trackTitle');
+const playerEl= document.getElementById('player');
+
+const PLAY  = "M8 5v14l11-7z";
+const PAUSE = "M6 5h4v14H6zM14 5h4v14h-4z";
+
+let i = 0;
+
+function load(index, autoplay){
+  i = (index + TRACKS.length) % TRACKS.length;   // wrap = playlist loop
+  titleEl.style.opacity = 0;
+  setTimeout(() => {
+    audio.src = TRACKS[i].src;
+    titleEl.textContent = TRACKS[i].title;
+    titleEl.style.opacity = 1;
+    if (autoplay) audio.play().catch(()=>{});
+  }, 200);
+}
+
+function togglePlay(){
+  if (audio.paused){ audio.play().catch(()=>{}); }
+  else { audio.pause(); }
+}
+
+playBtn.addEventListener('click', togglePlay);
+nextBtn.addEventListener('click', () => load(i + 1, true));
+audio.addEventListener('ended', () => load(i + 1, true));   // auto-advance + loop
+
+audio.addEventListener('play', () => {
+  playIcon.setAttribute('d', PAUSE);
+  playBtn.setAttribute('aria-label','Pause');
+  playerEl.classList.add('playing');
+});
+audio.addEventListener('pause', () => {
+  playIcon.setAttribute('d', PLAY);
+  playBtn.setAttribute('aria-label','Play');
+  playerEl.classList.remove('playing');
+});
+
+load(0, false);
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* =====================================================================
+   3) THE SKY  — drifting nebula, cosmic dust, twinkling stars, planets
+   ===================================================================== */
+const canvas = document.getElementById('sky');
+const ctx = canvas.getContext('2d');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let W, H, DPR;
+let stars = [], dust = [], nebulae = [], planets = [];
+
+function rand(a, b){ return a + Math.random() * (b - a); }
+
+function build(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = canvas.width  = innerWidth  * DPR;
+  H = canvas.height = innerHeight * DPR;
+  canvas.style.width  = innerWidth + 'px';
+  canvas.style.height = innerHeight + 'px';
+
+  const area = innerWidth * innerHeight;
+
+  // sharp little stars
+  const starCount = Math.round(area / 1600);
+  stars = Array.from({length: starCount}, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: rand(0.3, 1.1) * DPR,
+    base: rand(0.25, 0.85),
+    tw: rand(1.8, 4.5),
+    ph: rand(0, Math.PI * 2),
+    drift: rand(0.01, 0.05) * DPR
+  }));
+
+  // soft glowing dust (the bokeh from the painting) — cream/pink/blue
+  const dustColors = ['242,232,214','231,179,210','138,166,207','224,162,94'];
+  const dustCount = Math.round(area / 26000);
+  dust = Array.from({length: dustCount}, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: rand(8, 34) * DPR,
+    c: dustColors[Math.floor(Math.random()*dustColors.length)],
+    a: rand(0.05, 0.22),
+    tw: rand(0.2, 0.7),
+    ph: rand(0, Math.PI*2),
+    vx: rand(-0.06, 0.06) * DPR,
+    vy: rand(-0.05, 0.03) * DPR
+  }));
+
+  // big slow nebula clouds, warm core like the album art
+  nebulae = [
+    { x: W*0.5,  y: H*0.42, r: Math.max(W,H)*0.55, c:'224,162,94', a:0.10, vx:0.04, vy:0.02 },
+    { x: W*0.2,  y: H*0.62, r: Math.max(W,H)*0.42, c:'231,179,210', a:0.09, vx:-0.03, vy:-0.02 },
+    { x: W*0.82, y: H*0.3,  r: Math.max(W,H)*0.40, c:'138,166,207', a:0.07, vx:0.02, vy:0.03 }
+  ];
+
+  // distant planets, tucked away
+  planets = [
+    { x: W*0.86, y: H*0.78, r: rand(34,46)*DPR, hue:'231,179,210', lit:-0.5 },
+    { x: W*0.12, y: H*0.18, r: rand(20,28)*DPR, hue:'138,166,207', lit:0.6 }
+  ];
+}
+
+function drawNebula(n){
+  const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+  g.addColorStop(0, `rgba(${n.c},${n.a})`);
+  g.addColorStop(0.5, `rgba(${n.c},${n.a*0.35})`);
+  g.addColorStop(1, `rgba(${n.c},0)`);
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,W,H);
+}
+
+function drawPlanet(p){
+  // soft body
+  const g = ctx.createRadialGradient(
+    p.x + p.r*p.lit, p.y - p.r*0.3, p.r*0.1,
+    p.x, p.y, p.r
+  );
+  g.addColorStop(0, `rgba(${p.hue},0.85)`);
+  g.addColorStop(0.6, `rgba(${p.hue},0.28)`);
+  g.addColorStop(1, `rgba(${p.hue},0.02)`);
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+  ctx.fillStyle = g;
+  ctx.fill();
+  // faint outer glow
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, p.r*1.5, 0, Math.PI*2);
+  const halo = ctx.createRadialGradient(p.x,p.y,p.r*0.8, p.x,p.y,p.r*1.5);
+  halo.addColorStop(0, `rgba(${p.hue},0.10)`);
+  halo.addColorStop(1, `rgba(${p.hue},0)`);
+  ctx.fillStyle = halo;
+  ctx.fill();
+}
+
+let t = 0;
+function frame(){
+  t += 0.01;
+
+  // deep space base gradient
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0, '#0a0706');
+  bg.addColorStop(0.55, '#080605');
+  bg.addColorStop(1, '#060403');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,W,H);
+
+  // nebulae drift
+  nebulae.forEach(n => {
+    if(!reduceMotion){
+      n.x += n.vx; n.y += n.vy;
+      if(n.x < -n.r*0.4 || n.x > W + n.r*0.4) n.vx *= -1;
+      if(n.y < -n.r*0.4 || n.y > H + n.r*0.4) n.vy *= -1;
+    }
+    drawNebula(n);
+  });
+
+  planets.forEach(drawPlanet);
+
+  // dust
+  ctx.globalCompositeOperation = 'lighter';
+  dust.forEach(d => {
+    if(!reduceMotion){
+      d.x += d.vx; d.y += d.vy;
+      if(d.x < -d.r) d.x = W + d.r;
+      if(d.x > W + d.r) d.x = -d.r;
+      if(d.y < -d.r) d.y = H + d.r;
+      if(d.y > H + d.r) d.y = -d.r;
+    }
+    const a = d.a * (0.6 + 0.4 * Math.sin(t * d.tw + d.ph));
+    const g = ctx.createRadialGradient(d.x,d.y,0, d.x,d.y,d.r);
+    g.addColorStop(0, `rgba(${d.c},${a})`);
+    g.addColorStop(1, `rgba(${d.c},0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+    ctx.fill();
+  });
+
+  // stars
+  stars.forEach(s => {
+    if(!reduceMotion){
+      s.y += s.drift;
+      if(s.y > H) s.y = 0;
+    }
+    const a = s.base * (0.45 + 0.55 * Math.sin(t * s.tw + s.ph));
+    // soft glow halo
+    const halo = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 6);
+    halo.addColorStop(0, `rgba(248,240,224,${a * 0.6})`);
+    halo.addColorStop(0.4, `rgba(231,179,210,${a * 0.18})`);
+    halo.addColorStop(1, 'rgba(248,240,224,0)');
+    ctx.fillStyle = halo;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r * 6, 0, Math.PI*2);
+    ctx.fill();
+    // bright core
+    ctx.fillStyle = `rgba(255,250,240,${Math.min(1, a * 1.3)})`;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fill();
+  });
+  ctx.globalCompositeOperation = 'source-over';
+
+  requestAnimationFrame(frame);
+}
+
+build();
+frame();
+
+let resizeTimer;
+addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(build, 200);
+});
+</script>
+</body>
+</html>
