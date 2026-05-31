@@ -4,6 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>MELU</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="description" content="MELU — ambient / pop / indie / rock. Where visuals meet sound." />
 
 <!-- ============================================================
@@ -229,17 +233,42 @@
 
   footer{
     position:fixed;
-    bottom:18px;
+    bottom:16px;
     left:0; right:0;
     z-index:3;
-    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    padding:0 16px;
+    opacity:0;
+    animation:rise 2s ease 1.4s forwards;
+  }
+  .social{
+    display:flex;
+    gap:clamp(14px, 3vw, 22px);
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .social a{
     font-size:10px;
+    letter-spacing:0.26em;
+    text-indent:0.26em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:rgba(242,232,214,0.42);
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  .social a:hover{
+    color:var(--amber);
+    text-shadow:0 0 14px rgba(224,162,94,0.45);
+  }
+  .byline{
+    font-size:9px;
     letter-spacing:0.34em;
     text-indent:0.34em;
     text-transform:uppercase;
-    color:rgba(242,232,214,0.28);
-    opacity:0;
-    animation:rise 2s ease 1.4s forwards;
+    color:rgba(242,232,214,0.22);
   }
 
   .version{
@@ -290,8 +319,16 @@
   </section>
 </main>
 
-<footer>MELU &nbsp;·&nbsp; <span id="year"></span></footer>
-<span class="version">v1.5</span>
+<footer>
+  <nav class="social">
+    <a href="https://www.soundcloud.com/melunoise" target="_blank" rel="noopener">SoundCloud</a>
+    <a href="https://www.instagram.com/melunoise" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.tiktok.com/@melunoise" target="_blank" rel="noopener">TikTok</a>
+    <a href="https://www.abc.net.au/triplejunearthed/artist/melu" target="_blank" rel="noopener">Unearthed</a>
+  </nav>
+  <span class="byline">MELU &nbsp;·&nbsp; <span id="year"></span></span>
+</footer>
+<span class="version">v1.7</span>
 
 <audio id="audio" preload="auto"></audio>
 
