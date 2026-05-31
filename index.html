@@ -343,7 +343,7 @@
   </nav>
   <span class="byline">MELU &nbsp;·&nbsp; <span id="year"></span></span>
 </footer>
-<span class="version">v1.8</span>
+<span class="version">v1.9</span>
 
 <audio id="audio" preload="auto"></audio>
 
@@ -448,6 +448,12 @@ const canvas = document.getElementById('sky');
 const ctx = canvas.getContext('2d');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// album artwork (Nikitin) blended into the deep field
+const artwork = new Image();
+let artLoaded = false;
+artwork.onload = () => { artLoaded = true; };
+artwork.src = 'artwork.jpg';
+
 let W, H, DPR;
 let stars = [], dust = [], nebulae = [], planets = [], meteors = [];
 const GAL = { cx:0, cy:0, R:0, angle:-0.42, sprites:[] };
@@ -521,7 +527,7 @@ function build(){
 
   // glowing dust / nebular knots, also leaning into the band
   const dustColors = ['242,232,214','231,179,210','138,166,207','224,162,94','176,196,232'];
-  const dustCount = Math.round(area / 21000);
+  const dustCount = Math.round(area / 32000);
   dust = Array.from({length: dustCount}, () => {
     const p = bandPoint(Math.random() < 0.6);
     return {
@@ -534,12 +540,12 @@ function build(){
     };
   });
 
-  // big slow nebula clouds, warm core like the album art
+  // big slow nebula clouds — kept subtle now the artwork carries the colour
   nebulae = [
-    { x: W*0.5,  y: H*0.42, r: Math.max(W,H)*0.55, c:'224,162,94', a:0.10, vx:0.05, vy:0.025 },
-    { x: W*0.2,  y: H*0.62, r: Math.max(W,H)*0.42, c:'231,179,210', a:0.09, vx:-0.04, vy:-0.03 },
-    { x: W*0.82, y: H*0.3,  r: Math.max(W,H)*0.40, c:'138,166,207', a:0.08, vx:0.03, vy:0.04 },
-    { x: W*0.66, y: H*0.72, r: Math.max(W,H)*0.36, c:'120,150,210', a:0.06, vx:-0.03, vy:0.035 }
+    { x: W*0.5,  y: H*0.42, r: Math.max(W,H)*0.55, c:'224,162,94', a:0.05, vx:0.05, vy:0.025 },
+    { x: W*0.2,  y: H*0.62, r: Math.max(W,H)*0.42, c:'231,179,210', a:0.05, vx:-0.04, vy:-0.03 },
+    { x: W*0.82, y: H*0.3,  r: Math.max(W,H)*0.40, c:'138,166,207', a:0.05, vx:0.03, vy:0.04 },
+    { x: W*0.66, y: H*0.72, r: Math.max(W,H)*0.36, c:'120,150,210', a:0.04, vx:-0.03, vy:0.035 }
   ];
 
   // distant planets, tucked away
@@ -660,6 +666,20 @@ function frame(){
   ctx.fillStyle = bg;
   ctx.fillRect(0,0,W,H);
 
+  // album artwork, cover-fit, gently breathing
+  if(artLoaded){
+    const ar = artwork.width / artwork.height;
+    let dw, dh;
+    if(W/H > ar){ dw = W; dh = W/ar; } else { dh = H; dw = H*ar; }
+    const breathe = reduceMotion ? 1.04 : (1.05 + 0.035*Math.sin(t*0.13));
+    dw *= breathe; dh *= breathe;
+    const dx = (W-dw)/2 + (reduceMotion?0:Math.sin(t*0.06)*W*0.012);
+    const dy = (H-dh)/2 + (reduceMotion?0:Math.cos(t*0.045)*H*0.012);
+    ctx.globalAlpha = 0.6;
+    ctx.drawImage(artwork, dx, dy, dw, dh);
+    ctx.globalAlpha = 1;
+  }
+
   // nebulae drift
   nebulae.forEach(n => {
     if(!reduceMotion){
@@ -675,6 +695,14 @@ function frame(){
   ctx.globalCompositeOperation = 'source-over';
 
   planets.forEach(drawPlanet);
+
+  // soft scrim so the wordmark + player stay readable over the art
+  const scrim = ctx.createRadialGradient(W/2, H*0.48, 0, W/2, H*0.48, Math.max(W,H)*0.5);
+  scrim.addColorStop(0,   'rgba(6,4,5,0.55)');
+  scrim.addColorStop(0.6, 'rgba(6,4,5,0.22)');
+  scrim.addColorStop(1,   'rgba(6,4,5,0)');
+  ctx.fillStyle = scrim;
+  ctx.fillRect(0,0,W,H);
 
   ctx.globalCompositeOperation = 'lighter';
 
