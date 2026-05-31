@@ -242,8 +242,19 @@
     animation:rise 2s ease 1.4s forwards;
   }
 
-  @media (prefers-reduced-motion: reduce){
-    .grain, .player.playing .eq span{ animation:none; }
+  .version{
+    position:fixed;
+    bottom:14px;
+    right:16px;
+    z-index:3;
+    font-size:9px;
+    letter-spacing:0.12em;
+    color:rgba(242,232,214,0.18);
+    opacity:0;
+    animation:rise 2s ease 1.6s forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce){    .grain, .player.playing .eq span{ animation:none; }
     .wordmark,.tagline,.player,footer{ animation-duration:.01s; opacity:1; }
   }
 </style>
@@ -280,6 +291,7 @@
 </main>
 
 <footer>MELU &nbsp;·&nbsp; <span id="year"></span></footer>
+<span class="version">v1.5</span>
 
 <audio id="audio" preload="auto"></audio>
 
