@@ -604,7 +604,6 @@ function renderVinyl() {
   if (!audio.paused) {
     vinylRotation += (audio.playbackRate * 1.5);
     playBtn.style.transform = `rotate(${vinylRotation}deg)`;
-    if (playIcon) playIcon.style.transform = `rotate(${-vinylRotation}deg)`;
   }
   requestAnimationFrame(renderVinyl);
 }
