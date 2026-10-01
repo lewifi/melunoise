@@ -522,14 +522,10 @@
     .sleeve-container {
       height: 38vh;
     }
-    .sleeve-flipper, .sleeve-front {
+    .sleeve-flipper {
       height: 100%;
     }
-    .sleeve-tracklist {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 14px 10px 0;
+    .sleeve-front {
       height: 100%;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
@@ -537,10 +533,17 @@
       scrollbar-width: thin;
       scrollbar-color: rgba(242,232,214,0.15) transparent;
     }
-    .sleeve-tracklist::-webkit-scrollbar { width: 4px; }
-    .sleeve-tracklist::-webkit-scrollbar-track { background: transparent; }
-    .sleeve-tracklist::-webkit-scrollbar-thumb { background: rgba(242,232,214,0.15); border-radius: 4px; }
-    .sleeve-tracklist::-webkit-scrollbar-thumb:hover { background: rgba(242,232,214,0.30); }
+    .sleeve-front::-webkit-scrollbar { width: 4px; }
+    .sleeve-front::-webkit-scrollbar-track { background: transparent; }
+    .sleeve-front::-webkit-scrollbar-thumb { background: rgba(242,232,214,0.15); border-radius: 4px; }
+    .sleeve-front::-webkit-scrollbar-thumb:hover { background: rgba(242,232,214,0.30); }
+    
+    .sleeve-tracklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 14px 10px 0;
+    }
   }
 </style>
 </head>
