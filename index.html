@@ -64,7 +64,8 @@
     background:var(--black);
     color:var(--cream);
     font-family:'Jost', sans-serif;
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
     position:relative;
     -webkit-font-smoothing:antialiased;
   }
@@ -110,12 +111,12 @@
   .stage{
     position:relative;
     z-index:3;
-    height:100%;
+    min-height:100%;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    padding:24px;
+    padding:24px 20px 88px;
     text-align:center;
   }
 
@@ -246,6 +247,82 @@
 
   .next svg{ width:20px; height:20px; }
 
+  /* play button active / playing glow */
+  .player.playing .ctrl.play{
+    border-color:rgba(224,162,94,0.85);
+    box-shadow:0 0 36px rgba(224,162,94,0.35);
+    background:radial-gradient(circle at 50% 40%, rgba(224,162,94,0.22), rgba(8,6,5,0) 70%);
+  }
+
+  /* vinyl sleeve tracklist */
+  .sleeve-tracklist{
+    margin-top:10px;
+    width:100%;
+    max-width:460px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    column-gap:18px;
+    row-gap:6px;
+    padding:14px 12px 0;
+    border-top:1px solid rgba(242,232,214,0.08);
+  }
+  @media (max-width: 480px){
+    .sleeve-tracklist{
+      grid-template-columns:1fr;
+      row-gap:5px;
+      max-height:190px;
+      overflow-y:auto;
+      scrollbar-width:none;
+    }
+    .sleeve-tracklist::-webkit-scrollbar{ display:none; }
+  }
+  .sleeve-track{
+    background:none;
+    border:none;
+    padding:3px 4px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    cursor:pointer;
+    font-family:'Jost', sans-serif;
+    text-align:left;
+    color:rgba(242,232,214,0.32);
+    border-radius:4px;
+    transition:color .25s ease, opacity .25s ease, transform .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .sleeve-track:hover{
+    color:rgba(242,232,214,0.78);
+    transform:translateX(2px);
+  }
+  .sleeve-num{
+    font-size:9px;
+    letter-spacing:0.15em;
+    color:rgba(242,232,214,0.22);
+    min-width:14px;
+    transition:color .25s ease;
+  }
+  .sleeve-title{
+    font-size:10.5px;
+    font-weight:300;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .sleeve-track.active{
+    color:var(--cream);
+    opacity:1;
+  }
+  .sleeve-track.active .sleeve-num{
+    color:var(--amber);
+  }
+  .sleeve-track.active .sleeve-title{
+    color:var(--amber);
+    text-shadow:0 0 10px rgba(224,162,94,0.45);
+  }
+
   footer{
     position:fixed;
     bottom:16px;
@@ -325,12 +402,14 @@
 
     <div class="controls">
       <button class="ctrl play" id="playBtn" aria-label="Play">
-        <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="playIcon" viewBox="0 0 24 24"><path id="playPath" d="M8 5v14l11-7z"/></svg>
       </button>
       <button class="ctrl next" id="nextBtn" aria-label="Next track">
         <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
       </button>
     </div>
+
+    <nav class="sleeve-tracklist" id="tracklist" aria-label="EP tracklist"></nav>
   </section>
 </main>
 
@@ -390,13 +469,42 @@ const audio   = document.getElementById('audio');
 const playBtn = document.getElementById('playBtn');
 const nextBtn = document.getElementById('nextBtn');
 const playIcon= document.getElementById('playIcon');
+const playPath= document.getElementById('playPath') || (playIcon ? playIcon.querySelector('path') : null);
 const titleEl = document.getElementById('trackTitle');
 const playerEl= document.getElementById('player');
+const tracklistEl = document.getElementById('tracklist');
 
 const PLAY  = "M8 5v14l11-7z";
 const PAUSE = "M6 5h4v14H6zM14 5h4v14h-4z";
 
 let i = 0;
+
+function updateActiveTrack(activeIdx){
+  if(!tracklistEl) return;
+  const items = tracklistEl.querySelectorAll('.sleeve-track');
+  items.forEach((item, idx) => {
+    item.classList.toggle('active', idx === activeIdx);
+  });
+}
+
+function renderTracklist(){
+  if(!tracklistEl) return;
+  tracklistEl.innerHTML = TRACKS.map((t, idx) => {
+    const num = String(idx + 1).padStart(2, '0');
+    return `<button class="sleeve-track" data-index="${idx}" aria-label="Play ${t.title}">
+      <span class="sleeve-num">${num}</span>
+      <span class="sleeve-title">${t.title}</span>
+    </button>`;
+  }).join('');
+
+  tracklistEl.querySelectorAll('.sleeve-track').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-index'), 10);
+      load(idx, true);
+    });
+  });
+  updateActiveTrack(i);
+}
 
 function load(index, autoplay){
   if(!TRACKS.length) return;
@@ -406,6 +514,7 @@ function load(index, autoplay){
     audio.src = TRACKS[i].src;
     titleEl.textContent = TRACKS[i].title;
     titleEl.style.opacity = 1;
+    updateActiveTrack(i);
     if (autoplay) audio.play().catch(()=>{});
   }, 200);
 }
@@ -421,12 +530,12 @@ nextBtn.addEventListener('click', () => load(i + 1, true));
 audio.addEventListener('ended', () => load(i + 1, true));   // auto-advance + loop
 
 audio.addEventListener('play', () => {
-  playIcon.setAttribute('d', PAUSE);
+  if (playPath) playPath.setAttribute('d', PAUSE);
   playBtn.setAttribute('aria-label','Pause');
   playerEl.classList.add('playing');
 });
 audio.addEventListener('pause', () => {
-  playIcon.setAttribute('d', PLAY);
+  if (playPath) playPath.setAttribute('d', PLAY);
   playBtn.setAttribute('aria-label','Play');
   playerEl.classList.remove('playing');
 });
@@ -434,6 +543,7 @@ audio.addEventListener('pause', () => {
 (async () => {
   await loadPlaylist();
   if(TRACKS.length){
+    renderTracklist();
     load(0, false);
   }else{
     titleEl.textContent = "—";

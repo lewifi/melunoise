@@ -1,0 +1,7 @@
+# Source audio & working files (keeps heavy masters out of git & Cloudflare)
+sourcemusic/
+*.wav
+
+# OS artifacts
+Thumbs.db
+.DS_Store
