@@ -224,15 +224,15 @@
     display:grid;
     place-items:center;
     cursor:pointer;
-    transition:border-color .3s ease, transform .25s ease, box-shadow .3s ease, background .3s ease;
+    transition:border-color .3s ease, box-shadow .3s ease, background .3s ease;
     -webkit-tap-highlight-color:transparent;
   }
-  .ctrl svg{ width:22px; height:22px; fill:var(--cream); }
+  .ctrl svg{ width:22px; height:22px; fill:var(--cream); transition:transform 0s; }
   .ctrl:hover{
     border-color:rgba(224,162,94,0.6);
     box-shadow:0 0 28px rgba(224,162,94,0.22);
   }
-  .ctrl:active{ transform:scale(0.94); }
+  .ctrl:active{ transform:scale(0.94); transition:transform .1s ease; }
 
   .ctrl.play{
     width:78px; height:78px;
@@ -568,10 +568,10 @@ let vinylRotation = 0;
 function togglePlay(){
   if(!TRACKS.length) return;
   if (audio.paused){ 
-    audio.playbackRate = 0;
+    audio.playbackRate = 0.05;
     audio.play().catch(()=>{}); 
     cancelAnimationFrame(spinTimer);
-    let speed = 0;
+    let speed = 0.05;
     function spinUp() {
       speed += 0.04;
       if (speed >= 1) {
@@ -588,7 +588,7 @@ function togglePlay(){
     let speed = audio.playbackRate;
     function spinDown() {
       speed -= 0.02;
-      if (speed <= 0) {
+      if (speed <= 0.05) {
         audio.pause();
         audio.playbackRate = 1;
       } else {
