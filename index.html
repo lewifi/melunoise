@@ -502,21 +502,35 @@
   }
 
   @media (max-width: 768px) {
-    .stage {
-      padding: 4vh 14px 60px;
-      min-height: 100vh;
+    html, body {
+      overflow: hidden;
+      height: 100%;
     }
-    .wordmark { margin-top: 2vh; }
+    .stage {
+      padding: 3vh 14px 60px;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .wordmark { margin-top: 1vh; }
     .player {
       margin-top: 2vh;
-      padding: 20px 14px;
+      padding: 16px 14px;
+    }
+    .sleeve-container {
+      height: 38vh;
+    }
+    .sleeve-flipper, .sleeve-front {
+      height: 100%;
     }
     .sleeve-tracklist {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      padding: 20px 10px 0;
-      max-height: 40vh;
+      padding: 14px 10px 0;
+      height: 100%;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-y: contain;
