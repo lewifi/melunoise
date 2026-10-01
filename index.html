@@ -197,6 +197,7 @@
     text-indent:0.4em;
     text-transform:uppercase;
     color:rgba(242,232,214,0.4);
+    transition:opacity .3s ease;
   }
   .track-title{
     font-family:'Jost', sans-serif;
@@ -514,6 +515,7 @@ const playPath= document.getElementById('playPath') || (playIcon ? playIcon.quer
 const titleEl = document.getElementById('trackTitle');
 const playerEl= document.getElementById('player');
 const tracklistEl = document.getElementById('tracklist');
+const nowLabel = document.querySelector('.now-label');
 
 const PLAY  = "M8 5v14l11-7z";
 const PAUSE = "M6 5h4v14H6zM14 5h4v14h-4z";
@@ -620,15 +622,26 @@ playBtn.addEventListener('click', togglePlay);
 nextBtn.addEventListener('click', () => load(i + 1, true));
 audio.addEventListener('ended', () => load(i + 1, true));   // auto-advance + loop
 
+function updateNowLabel(text) {
+  if (nowLabel.textContent === text) return;
+  nowLabel.style.opacity = 0;
+  setTimeout(() => {
+    nowLabel.textContent = text;
+    nowLabel.style.opacity = 1;
+  }, 300);
+}
+
 audio.addEventListener('play', () => {
   if (playPath) playPath.setAttribute('d', PAUSE);
   playBtn.setAttribute('aria-label','Pause');
   playerEl.classList.add('playing');
+  updateNowLabel("now playing");
 });
 audio.addEventListener('pause', () => {
   if (playPath) playPath.setAttribute('d', PLAY);
   playBtn.setAttribute('aria-label','Play');
   playerEl.classList.remove('playing');
+  updateNowLabel("now paused");
 });
 
 (async () => {
