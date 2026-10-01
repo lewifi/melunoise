@@ -622,8 +622,8 @@ function updateActiveTrack(activeIdx){
 }
 
 async function fetchLyrics(filename) {
-  // e.g. "songs/i-will-melu.mp3" -> "songs/i-will-melu.txt"
-  const txtPath = filename.replace(/\.(mp3|m4a|wav)$/i, '.txt');
+  // e.g. "songs/i-will-melu.mp3" -> "lyrics/i-will-melu.txt"
+  const txtPath = filename.replace(/^songs\//i, 'lyrics/').replace(/\.(mp3|m4a|wav)$/i, '.txt');
   try {
     const res = await fetch(txtPath, { cache: "no-cache" });
     if (res.ok) {
