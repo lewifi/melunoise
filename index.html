@@ -506,7 +506,16 @@
       flex-direction: column;
       gap: 12px;
       padding: 20px 10px 0;
+      max-height: 50vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(242,232,214,0.15) transparent;
     }
+    .sleeve-tracklist::-webkit-scrollbar { width: 4px; }
+    .sleeve-tracklist::-webkit-scrollbar-track { background: transparent; }
+    .sleeve-tracklist::-webkit-scrollbar-thumb { background: rgba(242,232,214,0.15); border-radius: 4px; }
+    .sleeve-tracklist::-webkit-scrollbar-thumb:hover { background: rgba(242,232,214,0.30); }
     footer {
       position: relative;
       bottom: auto;
