@@ -496,6 +496,15 @@
   @media (prefers-reduced-motion: reduce){    .grain, .player.playing .eq span{ animation:none; }
     .wordmark,.tagline,.player,footer{ animation-duration:.01s; opacity:1; }
   }
+  
+  @media (max-width: 480px) {
+    .sleeve-tracklist {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      grid-auto-flow: row;
+      row-gap: 8px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -561,7 +570,7 @@
     <a href="https://www.tiktok.com/@melunoise" target="_blank" rel="noopener">TikTok</a>
     <a href="https://www.abc.net.au/triplejunearthed/artist/melu" target="_blank" rel="noopener">Unearthed</a>
   </nav>
-  <span class="byline">MELU &nbsp;·&nbsp; <span id="year"></span></span>
+  <span class="byline">&copy; Phil Hirvela, Lewi Hirvela <span id="year"></span></span>
 </footer>
 <span class="version">v1.9</span>
 
