@@ -501,12 +501,26 @@
   }
   
   @media (max-width: 768px) {
+    html, body {
+      overflow: hidden;
+      height: 100%;
+    }
+    .stage {
+      padding: 4vh 14px 60px;
+      min-height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
+      justify-content: flex-start;
+    }
+    .wordmark {
+      margin-top: 2vh;
+    }
     .sleeve-tracklist {
       display: flex;
       flex-direction: column;
       gap: 12px;
       padding: 20px 10px 0;
-      max-height: 50vh;
+      max-height: 42vh;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
@@ -516,27 +530,9 @@
     .sleeve-tracklist::-webkit-scrollbar-track { background: transparent; }
     .sleeve-tracklist::-webkit-scrollbar-thumb { background: rgba(242,232,214,0.15); border-radius: 4px; }
     .sleeve-tracklist::-webkit-scrollbar-thumb:hover { background: rgba(242,232,214,0.30); }
-    footer {
-      position: relative;
-      bottom: auto;
-      margin-top: 20px;
-      padding-bottom: 20px;
-    }
-    .version {
-      position: relative;
-      bottom: auto;
-      right: auto;
-      margin-top: 5px;
-      text-align: center;
-      display: block;
-      padding-bottom: 30px;
-    }
     .player {
-      margin-top: 10px;
+      margin-top: 2vh;
       padding: 20px 14px;
-    }
-    .stage {
-      padding-bottom: 20px;
     }
   }
 </style>
