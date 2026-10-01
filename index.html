@@ -252,14 +252,7 @@
     border-color:rgba(224,162,94,0.85);
     box-shadow:0 0 36px rgba(224,162,94,0.35);
     background:radial-gradient(circle at 50% 40%, rgba(224,162,94,0.22), rgba(8,6,5,0) 70%);
-    animation:spinRecord 3s linear infinite;
   }
-  .player.playing .ctrl.play svg{
-    animation:counterSpin 3s linear infinite;
-  }
-
-  @keyframes spinRecord { to { transform:rotate(360deg); } }
-  @keyframes counterSpin { to { transform:rotate(-360deg); } }
 
   /* Turntable & Tonearm */
   .turntable {
@@ -556,15 +549,62 @@ function load(index, autoplay){
     titleEl.textContent = TRACKS[i].title;
     titleEl.style.opacity = 1;
     updateActiveTrack(i);
+    audio.playbackRate = 1;
     if (autoplay) audio.play().catch(()=>{});
   }, 200);
 }
 
+audio.preservesPitch = false;
+audio.mozPreservesPitch = false;
+audio.webkitPreservesPitch = false;
+
+let spinTimer = null;
+let vinylRotation = 0;
+
 function togglePlay(){
   if(!TRACKS.length) return;
-  if (audio.paused){ audio.play().catch(()=>{}); }
-  else { audio.pause(); }
+  if (audio.paused){ 
+    audio.playbackRate = 0;
+    audio.play().catch(()=>{}); 
+    cancelAnimationFrame(spinTimer);
+    let speed = 0;
+    function spinUp() {
+      speed += 0.04;
+      if (speed >= 1) {
+        audio.playbackRate = 1;
+      } else {
+        audio.playbackRate = speed;
+        spinTimer = requestAnimationFrame(spinUp);
+      }
+    }
+    spinUp();
+  }
+  else { 
+    cancelAnimationFrame(spinTimer);
+    let speed = audio.playbackRate;
+    function spinDown() {
+      speed -= 0.02;
+      if (speed <= 0) {
+        audio.pause();
+        audio.playbackRate = 1;
+      } else {
+        audio.playbackRate = speed;
+        spinTimer = requestAnimationFrame(spinDown);
+      }
+    }
+    spinDown();
+  }
 }
+
+function renderVinyl() {
+  if (!audio.paused) {
+    vinylRotation += (audio.playbackRate * 1.5);
+    playBtn.style.transform = `rotate(${vinylRotation}deg)`;
+    if (playIcon) playIcon.style.transform = `rotate(${-vinylRotation}deg)`;
+  }
+  requestAnimationFrame(renderVinyl);
+}
+requestAnimationFrame(renderVinyl);
 
 playBtn.addEventListener('click', togglePlay);
 nextBtn.addEventListener('click', () => load(i + 1, true));
