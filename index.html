@@ -224,8 +224,11 @@
     display:grid;
     place-items:center;
     cursor:pointer;
-    transition:border-color .3s ease, box-shadow .3s ease, background .3s ease;
+    transition:border-color .3s ease, transform 0.6s cubic-bezier(0.3, 0, 0.2, 1), box-shadow .3s ease, background .3s ease;
     -webkit-tap-highlight-color:transparent;
+  }
+  .player.playing .ctrl {
+    transition:border-color .3s ease, box-shadow .3s ease, background .3s ease;
   }
   .ctrl svg{ width:22px; height:22px; fill:var(--cream); transition:transform 0s; }
   .ctrl:hover{
@@ -591,6 +594,10 @@ function togglePlay(){
       if (speed <= 0.1) {
         audio.pause();
         audio.playbackRate = 1;
+        requestAnimationFrame(() => {
+          vinylRotation = Math.round(vinylRotation / 360) * 360;
+          playBtn.style.transform = `rotate(${vinylRotation}deg)`;
+        });
       } else {
         try { audio.playbackRate = speed; } catch(e){}
         spinTimer = requestAnimationFrame(spinDown);
