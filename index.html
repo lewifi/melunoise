@@ -311,9 +311,22 @@
     padding:14px 12px 0;
     border-top:1px solid rgba(242,232,214,0.08);
     overflow-y:auto;
-    scrollbar-width:none;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(0,0,0,0.4) transparent;
   }
-  .sleeve-back::-webkit-scrollbar{ display:none; }
+  .sleeve-back::-webkit-scrollbar{
+    width:4px;
+  }
+  .sleeve-back::-webkit-scrollbar-track{
+    background:transparent;
+  }
+  .sleeve-back::-webkit-scrollbar-thumb{
+    background:rgba(0,0,0,0.4);
+    border-radius:4px;
+  }
+  .sleeve-back::-webkit-scrollbar-thumb:hover{
+    background:rgba(0,0,0,0.6);
+  }
   
   .lyric-sheet{
     font-family:'Jost', sans-serif;
