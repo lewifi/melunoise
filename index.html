@@ -325,6 +325,12 @@
     text-align:center;
     padding-bottom:24px;
   }
+  .lyric-sheet strong{
+    font-weight:600;
+    color:var(--cream);
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+  }
   
   .lyric-toggle{
     background:none;
@@ -669,10 +675,11 @@ async function load(index, autoplay){
     
     // Update lyrics UI
     if (lyrics) {
-      lyricSheet.textContent = lyrics;
+      const escapeHTML = str => str.replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag] || tag));
+      lyricSheet.innerHTML = escapeHTML(lyrics).replace(/\[(.*?)\]/g, '<strong>$1</strong>');
       lyricToggle.classList.add('visible');
     } else {
-      lyricSheet.textContent = "";
+      lyricSheet.innerHTML = "";
       lyricToggle.classList.remove('visible');
       if (isFlipped) lyricToggle.click(); // flip back if open
     }
