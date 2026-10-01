@@ -87,7 +87,7 @@
     z-index:1;
     pointer-events:none;
     background:
-      radial-gradient(120% 90% at 50% 42%, rgba(8,6,5,0) 38%, rgba(8,6,5,0.55) 100%);
+      radial-gradient(120% 90% at 50% 42%, rgba(8,6,5,0.4) 10%, rgba(8,6,5,0.85) 100%);
   }
   .grain{
     position:fixed;
@@ -313,6 +313,8 @@
     overflow-y:auto;
     scrollbar-width:thin;
     scrollbar-color:rgba(0,0,0,0.4) transparent;
+    display:flex;
+    flex-direction:column;
   }
   .sleeve-back::-webkit-scrollbar{
     width:4px;
@@ -337,6 +339,7 @@
     white-space:pre-wrap;
     text-align:center;
     padding-bottom:24px;
+    margin:auto 0;
   }
   .lyric-sheet strong{
     font-weight:600;
