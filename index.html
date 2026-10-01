@@ -280,11 +280,81 @@
     transform:rotate(12deg);
   }
 
-  /* vinyl sleeve tracklist */
-  .sleeve-tracklist{
-    margin-top:10px;
+  /* vinyl sleeve tracklist & lyrics flip */
+  .sleeve-container{
+    perspective:1000px;
     width:100%;
     max-width:460px;
+    margin-top:10px;
+  }
+  .sleeve-flipper{
+    position:relative;
+    width:100%;
+    transition:transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style:preserve-3d;
+  }
+  .sleeve-flipper.flipped{
+    transform:rotateY(180deg);
+  }
+  .sleeve-front{
+    position:relative;
+    width:100%;
+    backface-visibility:hidden;
+  }
+  .sleeve-back{
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    backface-visibility:hidden;
+    transform:rotateY(180deg);
+    padding:14px 12px 0;
+    border-top:1px solid rgba(242,232,214,0.08);
+    overflow-y:auto;
+    scrollbar-width:none;
+  }
+  .sleeve-back::-webkit-scrollbar{ display:none; }
+  
+  .lyric-sheet{
+    font-family:'Jost', sans-serif;
+    font-size:11px;
+    line-height:2.0;
+    letter-spacing:0.1em;
+    color:rgba(242,232,214,0.65);
+    white-space:pre-wrap;
+    text-align:center;
+    padding-bottom:24px;
+  }
+  
+  .lyric-toggle{
+    background:none;
+    border:1px solid rgba(242,232,214,0.15);
+    color:rgba(242,232,214,0.5);
+    font-family:'Jost', sans-serif;
+    font-size:9px;
+    letter-spacing:0.25em;
+    text-indent:0.25em;
+    text-transform:uppercase;
+    padding:5px 14px;
+    border-radius:14px;
+    cursor:pointer;
+    margin-top:18px;
+    transition:all .3s ease;
+    opacity:0;
+    pointer-events:none;
+  }
+  .lyric-toggle.visible{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .lyric-toggle:hover{
+    border-color:var(--amber);
+    color:var(--amber);
+    background:rgba(224,162,94,0.05);
+  }
+
+  .sleeve-tracklist{
+    width:100%;
     display:grid;
     grid-template-columns:1fr 1fr;
     grid-template-rows:repeat(6, auto);
@@ -451,7 +521,18 @@
       </button>
     </div>
 
-    <nav class="sleeve-tracklist" id="tracklist" aria-label="EP tracklist"></nav>
+    <div class="sleeve-container">
+      <div class="sleeve-flipper" id="sleeveFlipper">
+        <div class="sleeve-front">
+          <nav class="sleeve-tracklist" id="tracklist" aria-label="EP tracklist"></nav>
+        </div>
+        <div class="sleeve-back">
+          <div class="lyric-sheet" id="lyricSheet"></div>
+        </div>
+      </div>
+    </div>
+    
+    <button id="lyricToggle" class="lyric-toggle" aria-label="Toggle Lyrics">Lyric Sheet</button>
   </section>
 </main>
 
@@ -516,11 +597,21 @@ const titleEl = document.getElementById('trackTitle');
 const playerEl= document.getElementById('player');
 const tracklistEl = document.getElementById('tracklist');
 const nowLabel = document.querySelector('.now-label');
+const sleeveFlipper = document.getElementById('sleeveFlipper');
+const lyricSheet = document.getElementById('lyricSheet');
+const lyricToggle = document.getElementById('lyricToggle');
 
 const PLAY  = "M8 5v14l11-7z";
 const PAUSE = "M6 5h4v14H6zM14 5h4v14h-4z";
 
 let i = 0;
+let isFlipped = false;
+
+lyricToggle.addEventListener('click', () => {
+  isFlipped = !isFlipped;
+  sleeveFlipper.classList.toggle('flipped', isFlipped);
+  lyricToggle.textContent = isFlipped ? 'Tracklist' : 'Lyric Sheet';
+});
 
 function updateActiveTrack(activeIdx){
   if(!tracklistEl) return;
@@ -528,6 +619,19 @@ function updateActiveTrack(activeIdx){
   items.forEach((item, idx) => {
     item.classList.toggle('active', idx === activeIdx);
   });
+}
+
+async function fetchLyrics(filename) {
+  // e.g. "songs/i-will-melu.mp3" -> "songs/i-will-melu.txt"
+  const txtPath = filename.replace(/\.(mp3|m4a|wav)$/i, '.txt');
+  try {
+    const res = await fetch(txtPath, { cache: "no-cache" });
+    if (res.ok) {
+      const text = await res.text();
+      return text.trim();
+    }
+  } catch(e) {}
+  return null;
 }
 
 function renderTracklist(){
@@ -549,16 +653,31 @@ function renderTracklist(){
   updateActiveTrack(i);
 }
 
-function load(index, autoplay){
+async function load(index, autoplay){
   if(!TRACKS.length) return;
   i = (index + TRACKS.length) % TRACKS.length;   // wrap = playlist loop
   titleEl.style.opacity = 0;
+  
+  // Fetch lyrics concurrently while fading out title
+  const lyrics = await fetchLyrics(TRACKS[i].src);
+  
   setTimeout(() => {
     audio.src = TRACKS[i].src;
     titleEl.textContent = TRACKS[i].title;
     titleEl.style.opacity = 1;
     updateActiveTrack(i);
     audio.playbackRate = 1;
+    
+    // Update lyrics UI
+    if (lyrics) {
+      lyricSheet.textContent = lyrics;
+      lyricToggle.classList.add('visible');
+    } else {
+      lyricSheet.textContent = "";
+      lyricToggle.classList.remove('visible');
+      if (isFlipped) lyricToggle.click(); // flip back if open
+    }
+    
     if (autoplay) audio.play().catch(()=>{});
   }, 200);
 }
