@@ -335,10 +335,9 @@
     letter-spacing:0.25em;
     text-indent:0.25em;
     text-transform:uppercase;
-    padding:5px 14px;
+    padding:6px 16px;
     border-radius:14px;
     cursor:pointer;
-    margin-top:18px;
     transition:all .3s ease;
     opacity:0;
     pointer-events:none;
@@ -501,6 +500,8 @@
     </div>
 
     <div class="controls">
+      <button id="lyricToggle" class="lyric-toggle" aria-label="Toggle Lyrics">Lyrics</button>
+      
       <div class="turntable">
         <button class="ctrl play" id="playBtn" aria-label="Play">
           <svg id="playIcon" viewBox="0 0 24 24"><path id="playPath" d="M8 5v14l11-7z"/></svg>
@@ -531,8 +532,6 @@
         </div>
       </div>
     </div>
-    
-    <button id="lyricToggle" class="lyric-toggle" aria-label="Toggle Lyrics">Lyric Sheet</button>
   </section>
 </main>
 
@@ -610,7 +609,7 @@ let isFlipped = false;
 lyricToggle.addEventListener('click', () => {
   isFlipped = !isFlipped;
   sleeveFlipper.classList.toggle('flipped', isFlipped);
-  lyricToggle.textContent = isFlipped ? 'Tracklist' : 'Lyric Sheet';
+  lyricToggle.textContent = isFlipped ? 'Tracks' : 'Lyrics';
 });
 
 function updateActiveTrack(activeIdx){
