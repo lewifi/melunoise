@@ -502,50 +502,24 @@
   }
 
   @media (max-width: 768px) {
-    html, body {
-      overflow: hidden;
-      height: 100%;
-    }
     .stage {
       padding: 4vh 14px 60px;
       min-height: 100vh;
-      max-height: 100vh;
-      overflow: hidden;
-      justify-content: flex-start;
     }
     .wordmark { margin-top: 2vh; }
-    
     .player {
       margin-top: 2vh;
       padding: 20px 14px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-    }
-    .sleeve-container {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-    }
-    .sleeve-flipper {
-      height: 100%;
-    }
-    .sleeve-front {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
     }
     .sleeve-tracklist {
       display: flex;
       flex-direction: column;
       gap: 12px;
       padding: 20px 10px 0;
-      flex: 1;
-      min-height: 0;
+      max-height: 40vh;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
       scrollbar-width: thin;
       scrollbar-color: rgba(242,232,214,0.15) transparent;
     }
