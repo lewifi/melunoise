@@ -496,10 +496,11 @@
     animation:rise 2s ease 1.6s forwards;
   }
 
-  @media (prefers-reduced-motion: reduce){    .grain, .player.playing .eq span{ animation:none; }
-    .wordmark,.tagline,.player,footer{ animation-duration:.01s; opacity:1; }
+  @media (prefers-reduced-motion: reduce) {
+    .grain, .player.playing .eq span { animation:none; }
+    .wordmark,.tagline,.player,footer { animation-duration:.01s; opacity:1; }
   }
-  
+
   @media (max-width: 768px) {
     html, body {
       overflow: hidden;
@@ -512,15 +513,37 @@
       overflow: hidden;
       justify-content: flex-start;
     }
-    .wordmark {
+    .wordmark { margin-top: 2vh; }
+    
+    .player {
       margin-top: 2vh;
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+    .sleeve-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+    .sleeve-flipper {
+      height: 100%;
+    }
+    .sleeve-front {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
     .sleeve-tracklist {
       display: flex;
       flex-direction: column;
       gap: 12px;
       padding: 20px 10px 0;
-      max-height: 42vh;
+      flex: 1;
+      min-height: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
@@ -530,10 +553,6 @@
     .sleeve-tracklist::-webkit-scrollbar-track { background: transparent; }
     .sleeve-tracklist::-webkit-scrollbar-thumb { background: rgba(242,232,214,0.15); border-radius: 4px; }
     .sleeve-tracklist::-webkit-scrollbar-thumb:hover { background: rgba(242,232,214,0.30); }
-    .player {
-      margin-top: 2vh;
-      padding: 20px 14px;
-    }
   }
 </style>
 </head>
