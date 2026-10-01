@@ -283,6 +283,8 @@
     max-width:460px;
     display:grid;
     grid-template-columns:1fr 1fr;
+    grid-template-rows:repeat(6, auto);
+    grid-auto-flow:column;
     column-gap:18px;
     row-gap:6px;
     padding:14px 12px 0;
@@ -291,6 +293,8 @@
   @media (max-width: 480px){
     .sleeve-tracklist{
       grid-template-columns:1fr;
+      grid-template-rows:none;
+      grid-auto-flow:row;
       row-gap:5px;
       max-height:190px;
       overflow-y:auto;
