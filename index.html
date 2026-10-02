@@ -18,25 +18,25 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <meta name="description" content="MELU — ambient / pop / indie / rock. Where visuals meet sound." />
+  <meta name="description" content="MELU - ambient / pop / indie / rock. Where visuals meet sound." />
 
   <!-- Social share card.  Replace the domain below with your live URL 
      (e.g. https://melunoise.pages.dev or your custom domain) so the
      preview image resolves for Facebook, iMessage, X, etc. -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="MELU — When Noise Becomes" />
+  <meta property="og:title" content="MELU - When Noise Becomes" />
   <meta property="og:description" content="Ambient, pop, indie, rock. Where visuals meet sound." />
   <meta property="og:url" content="https://melunoise.com/" />
   <meta property="og:image" content="https://melunoise.com/og-card.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="MELU — When Noise Becomes" />
+  <meta name="twitter:title" content="MELU - When Noise Becomes" />
   <meta name="twitter:description" content="Ambient, pop, indie, rock. Where visuals meet sound." />
   <meta name="twitter:image" content="https://melunoise.com/og-card.png" />
 
   <!-- ============================================================
-     MELU — ambient galaxy landing page
+     MELU - ambient galaxy landing page
      Single file. No build step. Drop into a GitHub repo and point
      Cloudflare Pages at it (Framework preset: None, build command:
      blank, output dir: /). It just serves this file.
@@ -721,7 +721,7 @@
 
       <div class="track-meta">
         <span class="now-label">now playing</span>
-        <span class="track-title" id="trackTitle">—</span>
+        <span class="track-title" id="trackTitle">-</span>
       </div>
 
       <div class="controls">
@@ -780,13 +780,13 @@
 
   <script>
     /* =====================================================================
-       1) YOUR PLAYLIST  — read from the file  songs/play.list
+       1) YOUR PLAYLIST  - read from the file  songs/play.list
        One track per line, comma delimited:   Title, filename.m4a
        Example:
            Sunlit Drift, sunlit-drift.m4a
            Second Song, second-song.m4a
        Audio files live in the  songs/  folder beside this file.
-       No need to touch this HTML again — just edit songs/playlist.
+       No need to touch this HTML again - just edit songs/playlist.
        ===================================================================== */
     const PLAYLIST_URL = "songs/play.list";
     const SONGS_DIR = "songs/";
@@ -999,13 +999,13 @@
         renderTracklist();
         load(0, false);
       } else {
-        titleEl.textContent = "—";
+        titleEl.textContent = "-";
       }
     })();
     document.getElementById('year').textContent = new Date().getFullYear();
 
     /* =====================================================================
-       3) THE SKY  — drifting nebula, cosmic dust, twinkling stars, planets
+       3) THE SKY  - drifting nebula, cosmic dust, twinkling stars, planets
        ===================================================================== */
     const canvas = document.getElementById('sky');
     const ctx = canvas.getContext('2d');
@@ -1073,7 +1073,7 @@
         return { bx: u * ca - v * sa, by: u * sa + v * ca };
       }
 
-      // stars — over half clustered into the Milky Way band
+      // stars - over half clustered into the Milky Way band
       const starCount = Math.round(area / 1200);
       stars = Array.from({ length: starCount }, () => {
         const inBand = Math.random() < 0.58;
@@ -1103,7 +1103,7 @@
         };
       });
 
-      // big slow nebula clouds — kept subtle now the artwork carries the colour
+      // big slow nebula clouds - kept subtle now the artwork carries the colour
       nebulae = [
         { x: W * 0.5, y: H * 0.42, r: Math.max(W, H) * 0.55, c: '224,162,94', a: 0.05, vx: 0.05, vy: 0.025 },
         { x: W * 0.2, y: H * 0.62, r: Math.max(W, H) * 0.42, c: '231,179,210', a: 0.05, vx: -0.04, vy: -0.03 },
