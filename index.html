@@ -1,31 +1,41 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>MELU</title>
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<meta name="description" content="MELU — ambient / pop / indie / rock. Where visuals meet sound." />
 
-<!-- Social share card.  Replace the domain below with your live URL 
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-90DMHWKGW1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-90DMHWKGW1');
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MELU</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="description" content="MELU — ambient / pop / indie / rock. Where visuals meet sound." />
+
+  <!-- Social share card.  Replace the domain below with your live URL 
      (e.g. https://melunoise.pages.dev or your custom domain) so the
      preview image resolves for Facebook, iMessage, X, etc. -->
-<meta property="og:type" content="website" />
-<meta property="og:title" content="MELU — When Noise Becomes" />
-<meta property="og:description" content="Ambient, pop, indie, rock. Where visuals meet sound." />
-<meta property="og:url" content="https://melunoise.com/" />
-<meta property="og:image" content="https://melunoise.com/og-card.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="MELU — When Noise Becomes" />
-<meta name="twitter:description" content="Ambient, pop, indie, rock. Where visuals meet sound." />
-<meta name="twitter:image" content="https://melunoise.com/og-card.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="MELU — When Noise Becomes" />
+  <meta property="og:description" content="Ambient, pop, indie, rock. Where visuals meet sound." />
+  <meta property="og:url" content="https://melunoise.com/" />
+  <meta property="og:image" content="https://melunoise.com/og-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MELU — When Noise Becomes" />
+  <meta name="twitter:description" content="Ambient, pop, indie, rock. Where visuals meet sound." />
+  <meta name="twitter:image" content="https://melunoise.com/og-card.png" />
 
-<!-- ============================================================
+  <!-- ============================================================
      MELU — ambient galaxy landing page
      Single file. No build step. Drop into a GitHub repo and point
      Cloudflare Pages at it (Framework preset: None, build command:
@@ -38,1116 +48,1269 @@
      you need to make.
      ============================================================ -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 
-<style>
-  :root{
-    --black:#080605;
-    --ink:#0d0a08;
-    --amber:#e0a25e;
-    --amber-soft:#c98a4c;
-    --pink:#e7b3d2;
-    --pink-soft:#d99fc4;
-    --blue:#8aa6cf;
-    --blue-soft:#728fbd;
-    --cream:#f2e8d6;
-    --dust:#bfb09a;
-  }
-
-  *{ box-sizing:border-box; margin:0; padding:0; }
-
-  html,body{
-    min-height:100%;
-  }
-  body{
-    background:var(--black);
-    color:var(--cream);
-    font-family:'Jost', sans-serif;
-    position:relative;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  /* the animated sky lives here */
-  #sky{
-    position:fixed;
-    inset:0;
-    width:100%;
-    height:100%;
-    display:block;
-    z-index:0;
-    pointer-events:none;
-  }
-
-  /* vignette + grain on top of the canvas for depth */
-  .veil{
-    position:fixed;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-    background:
-      radial-gradient(120% 90% at 50% 42%, rgba(8,6,5,0.4) 10%, rgba(8,6,5,0.85) 100%);
-  }
-  .grain{
-    position:fixed;
-    inset:-50%;
-    z-index:2;
-    pointer-events:none;
-    opacity:0.05;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation:grain 6s steps(6) infinite;
-  }
-  @keyframes grain{
-    0%{ transform:translate(0,0); }
-    20%{ transform:translate(-4%,3%); }
-    40%{ transform:translate(3%,-5%); }
-    60%{ transform:translate(-3%,4%); }
-    80%{ transform:translate(5%,-2%); }
-    100%{ transform:translate(0,0); }
-  }
-
-  /* main stage */
-  .stage{
-    position:relative;
-    z-index:3;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:8vh 20px 88px;
-    text-align:center;
-  }
-
-  .wordmark{
-    width:clamp(240px, 46vw, 520px);
-    height:auto;
-    display:block;
-    filter:
-      drop-shadow(0 0 26px rgba(224,162,94,0.30))
-      drop-shadow(0 0 64px rgba(231,179,210,0.16));
-    opacity:0;
-    animation:rise 1.8s cubic-bezier(.16,.84,.34,1) 0.2s forwards;
-  }
-
-  .tagline{
-    margin-top:18px;
-    font-weight:300;
-    font-size:clamp(11px, 2.4vw, 13px);
-    letter-spacing:0.42em;
-    text-indent:0.42em;
-    text-transform:uppercase;
-    color:rgba(242,232,214,0.62);
-    opacity:0;
-    animation:rise 1.8s cubic-bezier(.16,.84,.34,1) 0.55s forwards;
-  }
-
-  @keyframes rise{
-    from{ opacity:0; transform:translateY(18px); filter:blur(6px); }
-    to{ opacity:1; transform:translateY(0); filter:blur(0); }
-  }
-
-  /* ---- player ---- */
-  .player{
-    margin-top:clamp(40px, 7vh, 72px);
-    width:min(420px, 86vw);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:22px;
-    opacity:0;
-    animation:rise 1.8s cubic-bezier(.16,.84,.34,1) 0.9s forwards;
-  }
-
-  .eq{
-    display:flex;
-    align-items:flex-end;
-    gap:4px;
-    height:18px;
-  }
-  .eq span{
-    width:3px;
-    height:4px;
-    border-radius:2px;
-    background:linear-gradient(var(--amber), var(--pink));
-    opacity:0.5;
-  }
-  .player.playing .eq span{
-    animation:bounce 1.1s ease-in-out infinite;
-  }
-  .player.playing .eq span:nth-child(2){ animation-delay:.18s; }
-  .player.playing .eq span:nth-child(3){ animation-delay:.36s; }
-  .player.playing .eq span:nth-child(4){ animation-delay:.10s; }
-  .player.playing .eq span:nth-child(5){ animation-delay:.48s; }
-  @keyframes bounce{
-    0%,100%{ height:4px; opacity:0.45; }
-    50%{ height:18px; opacity:0.95; }
-  }
-
-  .track-meta{
-    min-height:30px;
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-  }
-  .now-label{
-    font-size:10px;
-    letter-spacing:0.4em;
-    text-indent:0.4em;
-    text-transform:uppercase;
-    color:rgba(242,232,214,0.4);
-    transition:opacity .3s ease;
-  }
-  .track-title{
-    font-family:'Jost', sans-serif;
-    font-weight:400;
-    font-size:clamp(15px, 3.6vw, 19px);
-    letter-spacing:0.22em;
-    text-indent:0.22em;
-    text-transform:uppercase;
-    color:var(--cream);
-    transition:opacity .35s ease;
-  }
-
-  .controls{
-    display:flex;
-    align-items:center;
-    gap:30px;
-  }
-  .ctrl{
-    background:none;
-    border:1px solid rgba(242,232,214,0.18);
-    color:var(--cream);
-    width:64px;
-    height:64px;
-    border-radius:50%;
-    display:grid;
-    place-items:center;
-    cursor:pointer;
-    transition:border-color .3s ease, transform 0.6s cubic-bezier(0.3, 0, 0.2, 1), box-shadow .3s ease, background .3s ease;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .player.playing .ctrl {
-    transition:border-color .3s ease, box-shadow .3s ease, background .3s ease;
-  }
-  .ctrl svg{ width:22px; height:22px; fill:var(--cream); transition:transform 0s; }
-  .ctrl:hover{
-    border-color:rgba(224,162,94,0.6);
-    box-shadow:0 0 28px rgba(224,162,94,0.22);
-  }
-  .ctrl:active{ transform:scale(0.94); transition:transform .1s ease; }
-
-  .ctrl.play{
-    width:78px; height:78px;
-    border-color:rgba(224,162,94,0.45);
-    background:radial-gradient(circle at 50% 40%, rgba(224,162,94,0.12), rgba(8,6,5,0) 70%);
-  }
-  .ctrl.play svg{ width:26px; height:26px; }
-  .ctrl.play:hover{
-    border-color:rgba(231,179,210,0.7);
-    box-shadow:0 0 40px rgba(231,179,210,0.25);
-  }
-
-  .next svg{ width:20px; height:20px; }
-
-  /* play button active / playing glow */
-  .player.playing .ctrl.play{
-    border-color:rgba(224,162,94,0.85);
-    box-shadow:0 0 36px rgba(224,162,94,0.35);
-    background:radial-gradient(circle at 50% 40%, rgba(224,162,94,0.22), rgba(8,6,5,0) 70%);
-  }
-
-  /* Turntable & Tonearm */
-  .turntable {
-    position:relative;
-    display:flex;
-  }
-  .tonearm {
-    position:absolute;
-    top:-8px;
-    right:-14px;
-    width:36px;
-    height:70px;
-    pointer-events:none;
-    transform-origin:27px 13px; /* aligns with pivot cx=27 cy=13 */
-    transform:rotate(-38deg);
-    transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index:4;
-    filter:drop-shadow(0 4px 6px rgba(8,6,5,0.4));
-  }
-  .player.playing .tonearm {
-    transform:rotate(12deg);
-  }
-
-  /* vinyl sleeve tracklist & lyrics flip */
-  .sleeve-container{
-    perspective:1000px;
-    width:100%;
-    max-width:460px;
-    margin-top:10px;
-  }
-  .sleeve-flipper{
-    position:relative;
-    width:100%;
-    transition:transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style:preserve-3d;
-  }
-  .sleeve-flipper.flipped{
-    transform:rotateY(180deg);
-  }
-  .sleeve-front{
-    position:relative;
-    width:100%;
-    backface-visibility:hidden;
-  }
-  .sleeve-back{
-    position:absolute;
-    top:0; left:0;
-    width:100%;
-    height:100%;
-    backface-visibility:hidden;
-    transform:rotateY(180deg);
-    padding:14px 12px 0;
-    border-top:1px solid rgba(242,232,214,0.08);
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:thin;
-    scrollbar-color:rgba(242,232,214,0.15) transparent;
-    display:flex;
-    flex-direction:column;
-  }
-  .sleeve-back::-webkit-scrollbar{
-    width:4px;
-  }
-  .sleeve-back::-webkit-scrollbar-track{
-    background:transparent;
-  }
-  .sleeve-back::-webkit-scrollbar-thumb{
-    background:rgba(242,232,214,0.15);
-    border-radius:4px;
-  }
-  .sleeve-back::-webkit-scrollbar-thumb:hover{
-    background:rgba(242,232,214,0.30);
-  }
-  
-  .lyric-sheet{
-    font-family:'Jost', sans-serif;
-    font-size:11px;
-    line-height:2.0;
-    letter-spacing:0.1em;
-    color:rgba(242,232,214,0.65);
-    white-space:pre-wrap;
-    text-align:center;
-    padding-bottom:24px;
-    margin:auto 0;
-  }
-  .lyric-sheet strong{
-    font-weight:600;
-    color:var(--cream);
-    letter-spacing:0.2em;
-    text-transform:uppercase;
-  }
-  
-  .lyric-toggle{
-    background:none;
-    border:1px solid rgba(242,232,214,0.15);
-    color:rgba(242,232,214,0.5);
-    font-family:'Jost', sans-serif;
-    font-size:9px;
-    letter-spacing:0.25em;
-    text-indent:0.25em;
-    text-transform:uppercase;
-    padding:6px 16px;
-    border-radius:14px;
-    cursor:pointer;
-    transition:all .3s ease;
-    opacity:0;
-    pointer-events:none;
-  }
-  .lyric-toggle.visible{
-    opacity:1;
-    pointer-events:auto;
-  }
-  .lyric-toggle:hover{
-    border-color:var(--amber);
-    color:var(--amber);
-    background:rgba(224,162,94,0.05);
-  }
-
-  .sleeve-tracklist{
-    width:100%;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    grid-template-rows:repeat(6, auto);
-    grid-auto-flow:column;
-    column-gap:18px;
-    row-gap:6px;
-    padding:14px 12px 0;
-    border-top:1px solid rgba(242,232,214,0.08);
-  }
-  @media (max-width: 480px){
-    .sleeve-tracklist{
-      grid-template-columns:1fr;
-      grid-template-rows:none;
-      grid-auto-flow:row;
-      row-gap:5px;
-      max-height:190px;
-      overflow-y:auto;
-      scrollbar-width:none;
+  <style>
+    :root {
+      --black: #080605;
+      --ink: #0d0a08;
+      --amber: #e0a25e;
+      --amber-soft: #c98a4c;
+      --pink: #e7b3d2;
+      --pink-soft: #d99fc4;
+      --blue: #8aa6cf;
+      --blue-soft: #728fbd;
+      --cream: #f2e8d6;
+      --dust: #bfb09a;
     }
-    .sleeve-tracklist::-webkit-scrollbar{ display:none; }
-  }
-  .sleeve-track{
-    background:none;
-    border:none;
-    padding:3px 4px;
-    display:flex;
-    align-items:baseline;
-    gap:8px;
-    cursor:pointer;
-    font-family:'Jost', sans-serif;
-    text-align:left;
-    color:rgba(242,232,214,0.32);
-    border-radius:4px;
-    transition:color .25s ease, opacity .25s ease, transform .2s ease;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .sleeve-track:hover{
-    color:rgba(242,232,214,0.78);
-    transform:translateX(2px);
-  }
-  .sleeve-num{
-    font-size:9px;
-    letter-spacing:0.15em;
-    color:rgba(242,232,214,0.22);
-    min-width:14px;
-    transition:color .25s ease;
-  }
-  .sleeve-title{
-    font-size:10.5px;
-    font-weight:300;
-    letter-spacing:0.16em;
-    text-transform:uppercase;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .sleeve-track.active{
-    color:var(--cream);
-    opacity:1;
-  }
-  .sleeve-track.active .sleeve-num{
-    color:var(--amber);
-  }
-  .sleeve-track.active .sleeve-title{
-    color:var(--amber);
-    text-shadow:0 0 10px rgba(224,162,94,0.45);
-  }
 
-  footer{
-    position:fixed;
-    bottom:16px;
-    left:0; right:0;
-    z-index:3;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:8px;
-    padding:0 16px;
-    opacity:0;
-    animation:rise 2s ease 1.4s forwards;
-  }
-  .social{
-    display:flex;
-    gap:clamp(14px, 3vw, 22px);
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-  .social a{
-    font-size:10px;
-    letter-spacing:0.26em;
-    text-indent:0.26em;
-    text-transform:uppercase;
-    text-decoration:none;
-    color:rgba(242,232,214,0.42);
-    transition:color .3s ease, text-shadow .3s ease;
-  }
-  .social a:hover{
-    color:var(--amber);
-    text-shadow:0 0 14px rgba(224,162,94,0.45);
-  }
-  .byline{
-    font-size:9px;
-    letter-spacing:0.34em;
-    text-indent:0.34em;
-    text-transform:uppercase;
-    color:rgba(242,232,214,0.22);
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .version{
-    position:fixed;
-    bottom:14px;
-    right:16px;
-    z-index:3;
-    font-size:9px;
-    letter-spacing:0.12em;
-    color:rgba(242,232,214,0.18);
-    opacity:0;
-    animation:rise 2s ease 1.6s forwards;
-  }
+    html,
+    body {
+      min-height: 100%;
+    }
 
-  @media (prefers-reduced-motion: reduce) {
-    .grain, .player.playing .eq span { animation:none; }
-    .wordmark,.tagline,.player,footer { animation-duration:.01s; opacity:1; }
-  }
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  @media (max-width: 768px) {
-    html, body {
-      overflow: hidden;
+    /* the animated sky lives here */
+    #sky {
+      position: fixed;
+      inset: 0;
+      width: 100%;
       height: 100%;
+      display: block;
+      z-index: 0;
+      pointer-events: none;
     }
+
+    /* vignette + grain on top of the canvas for depth */
+    .veil {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(120% 90% at 50% 42%, rgba(8, 6, 5, 0.4) 10%, rgba(8, 6, 5, 0.85) 100%);
+    }
+
+    .grain {
+      position: fixed;
+      inset: -50%;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: grain 6s steps(6) infinite;
+    }
+
+    @keyframes grain {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      20% {
+        transform: translate(-4%, 3%);
+      }
+
+      40% {
+        transform: translate(3%, -5%);
+      }
+
+      60% {
+        transform: translate(-3%, 4%);
+      }
+
+      80% {
+        transform: translate(5%, -2%);
+      }
+
+      100% {
+        transform: translate(0, 0);
+      }
+    }
+
+    /* main stage */
     .stage {
-      padding: 3vh 14px 60px;
-      height: 100vh;
-      overflow: hidden;
+      position: relative;
+      z-index: 3;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      align-items: center;
+      padding: 8vh 20px 88px;
+      text-align: center;
     }
-    .wordmark { margin-top: 1vh; }
+
+    .wordmark {
+      width: clamp(240px, 46vw, 520px);
+      height: auto;
+      display: block;
+      filter:
+        drop-shadow(0 0 26px rgba(224, 162, 94, 0.30)) drop-shadow(0 0 64px rgba(231, 179, 210, 0.16));
+      opacity: 0;
+      animation: rise 1.8s cubic-bezier(.16, .84, .34, 1) 0.2s forwards;
+    }
+
+    .tagline {
+      margin-top: 18px;
+      font-weight: 300;
+      font-size: clamp(11px, 2.4vw, 13px);
+      letter-spacing: 0.42em;
+      text-indent: 0.42em;
+      text-transform: uppercase;
+      color: rgba(242, 232, 214, 0.62);
+      opacity: 0;
+      animation: rise 1.8s cubic-bezier(.16, .84, .34, 1) 0.55s forwards;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+        filter: blur(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    /* ---- player ---- */
     .player {
-      margin-top: 2vh;
-      padding: 16px 14px;
+      margin-top: clamp(40px, 7vh, 72px);
+      width: min(420px, 86vw);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      opacity: 0;
+      animation: rise 1.8s cubic-bezier(.16, .84, .34, 1) 0.9s forwards;
     }
+
+    .eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 18px;
+    }
+
+    .eq span {
+      width: 3px;
+      height: 4px;
+      border-radius: 2px;
+      background: linear-gradient(var(--amber), var(--pink));
+      opacity: 0.5;
+    }
+
+    .player.playing .eq span {
+      animation: bounce 1.1s ease-in-out infinite;
+    }
+
+    .player.playing .eq span:nth-child(2) {
+      animation-delay: .18s;
+    }
+
+    .player.playing .eq span:nth-child(3) {
+      animation-delay: .36s;
+    }
+
+    .player.playing .eq span:nth-child(4) {
+      animation-delay: .10s;
+    }
+
+    .player.playing .eq span:nth-child(5) {
+      animation-delay: .48s;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        height: 4px;
+        opacity: 0.45;
+      }
+
+      50% {
+        height: 18px;
+        opacity: 0.95;
+      }
+    }
+
+    .track-meta {
+      min-height: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .now-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-indent: 0.4em;
+      text-transform: uppercase;
+      color: rgba(242, 232, 214, 0.4);
+      transition: opacity .3s ease;
+    }
+
+    .track-title {
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+      font-size: clamp(15px, 3.6vw, 19px);
+      letter-spacing: 0.22em;
+      text-indent: 0.22em;
+      text-transform: uppercase;
+      color: var(--cream);
+      transition: opacity .35s ease;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .ctrl {
+      background: none;
+      border: 1px solid rgba(242, 232, 214, 0.18);
+      color: var(--cream);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: border-color .3s ease, transform 0.6s cubic-bezier(0.3, 0, 0.2, 1), box-shadow .3s ease, background .3s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .player.playing .ctrl {
+      transition: border-color .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+
+    .ctrl svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--cream);
+      transition: transform 0s;
+    }
+
+    .ctrl:hover {
+      border-color: rgba(224, 162, 94, 0.6);
+      box-shadow: 0 0 28px rgba(224, 162, 94, 0.22);
+    }
+
+    .ctrl:active {
+      transform: scale(0.94);
+      transition: transform .1s ease;
+    }
+
+    .ctrl.play {
+      width: 78px;
+      height: 78px;
+      border-color: rgba(224, 162, 94, 0.45);
+      background: radial-gradient(circle at 50% 40%, rgba(224, 162, 94, 0.12), rgba(8, 6, 5, 0) 70%);
+    }
+
+    .ctrl.play svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .ctrl.play:hover {
+      border-color: rgba(231, 179, 210, 0.7);
+      box-shadow: 0 0 40px rgba(231, 179, 210, 0.25);
+    }
+
+    .next svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* play button active / playing glow */
+    .player.playing .ctrl.play {
+      border-color: rgba(224, 162, 94, 0.85);
+      box-shadow: 0 0 36px rgba(224, 162, 94, 0.35);
+      background: radial-gradient(circle at 50% 40%, rgba(224, 162, 94, 0.22), rgba(8, 6, 5, 0) 70%);
+    }
+
+    /* Turntable & Tonearm */
+    .turntable {
+      position: relative;
+      display: flex;
+    }
+
+    .tonearm {
+      position: absolute;
+      top: -8px;
+      right: -14px;
+      width: 36px;
+      height: 70px;
+      pointer-events: none;
+      transform-origin: 27px 13px;
+      /* aligns with pivot cx=27 cy=13 */
+      transform: rotate(-38deg);
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 4;
+      filter: drop-shadow(0 4px 6px rgba(8, 6, 5, 0.4));
+    }
+
+    .player.playing .tonearm {
+      transform: rotate(12deg);
+    }
+
+    /* vinyl sleeve tracklist & lyrics flip */
     .sleeve-container {
-      height: 38vh;
+      perspective: 1000px;
+      width: 100%;
+      max-width: 460px;
+      margin-top: 10px;
     }
+
     .sleeve-flipper {
-      height: 100%;
+      position: relative;
+      width: 100%;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
     }
+
+    .sleeve-flipper.flipped {
+      transform: rotateY(180deg);
+    }
+
     .sleeve-front {
+      position: relative;
+      width: 100%;
+      backface-visibility: hidden;
+    }
+
+    .sleeve-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
       height: 100%;
+      backface-visibility: hidden;
+      transform: rotateY(180deg);
+      padding: 14px 12px 0;
+      border-top: 1px solid rgba(242, 232, 214, 0.08);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      overscroll-behavior-y: contain;
       scrollbar-width: thin;
-      scrollbar-color: rgba(242,232,214,0.15) transparent;
-    }
-    .sleeve-front::-webkit-scrollbar { width: 4px; }
-    .sleeve-front::-webkit-scrollbar-track { background: transparent; }
-    .sleeve-front::-webkit-scrollbar-thumb { background: rgba(242,232,214,0.15); border-radius: 4px; }
-    .sleeve-front::-webkit-scrollbar-thumb:hover { background: rgba(242,232,214,0.30); }
-    
-    .sleeve-tracklist {
+      scrollbar-color: rgba(242, 232, 214, 0.15) transparent;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      padding: 14px 10px 0;
     }
-  }
-</style>
+
+    .sleeve-back::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .sleeve-back::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sleeve-back::-webkit-scrollbar-thumb {
+      background: rgba(242, 232, 214, 0.15);
+      border-radius: 4px;
+    }
+
+    .sleeve-back::-webkit-scrollbar-thumb:hover {
+      background: rgba(242, 232, 214, 0.30);
+    }
+
+    .lyric-sheet {
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      line-height: 2.0;
+      letter-spacing: 0.1em;
+      color: rgba(242, 232, 214, 0.65);
+      white-space: pre-wrap;
+      text-align: center;
+      padding-bottom: 24px;
+      margin: auto 0;
+    }
+
+    .lyric-sheet strong {
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .lyric-toggle {
+      background: none;
+      border: 1px solid rgba(242, 232, 214, 0.15);
+      color: rgba(242, 232, 214, 0.5);
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-indent: 0.25em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all .3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .lyric-toggle.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lyric-toggle:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+      background: rgba(224, 162, 94, 0.05);
+    }
+
+    .sleeve-tracklist {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(6, auto);
+      grid-auto-flow: column;
+      column-gap: 18px;
+      row-gap: 6px;
+      padding: 14px 12px 0;
+      border-top: 1px solid rgba(242, 232, 214, 0.08);
+    }
+
+    @media (max-width: 480px) {
+      .sleeve-tracklist {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        grid-auto-flow: row;
+        row-gap: 5px;
+        max-height: 190px;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+
+      .sleeve-tracklist::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .sleeve-track {
+      background: none;
+      border: none;
+      padding: 3px 4px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      text-align: left;
+      color: rgba(242, 232, 214, 0.32);
+      border-radius: 4px;
+      transition: color .25s ease, opacity .25s ease, transform .2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .sleeve-track:hover {
+      color: rgba(242, 232, 214, 0.78);
+      transform: translateX(2px);
+    }
+
+    .sleeve-num {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: rgba(242, 232, 214, 0.22);
+      min-width: 14px;
+      transition: color .25s ease;
+    }
+
+    .sleeve-title {
+      font-size: 10.5px;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sleeve-track.active {
+      color: var(--cream);
+      opacity: 1;
+    }
+
+    .sleeve-track.active .sleeve-num {
+      color: var(--amber);
+    }
+
+    .sleeve-track.active .sleeve-title {
+      color: var(--amber);
+      text-shadow: 0 0 10px rgba(224, 162, 94, 0.45);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 16px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      opacity: 0;
+      animation: rise 2s ease 1.4s forwards;
+    }
+
+    .social {
+      display: flex;
+      gap: clamp(14px, 3vw, 22px);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .social a {
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-indent: 0.26em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: rgba(242, 232, 214, 0.42);
+      transition: color .3s ease, text-shadow .3s ease;
+    }
+
+    .social a:hover {
+      color: var(--amber);
+      text-shadow: 0 0 14px rgba(224, 162, 94, 0.45);
+    }
+
+    .byline {
+      font-size: 9px;
+      letter-spacing: 0.34em;
+      text-indent: 0.34em;
+      text-transform: uppercase;
+      color: rgba(242, 232, 214, 0.22);
+    }
+
+    .version {
+      position: fixed;
+      bottom: 14px;
+      right: 16px;
+      z-index: 3;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: rgba(242, 232, 214, 0.18);
+      opacity: 0;
+      animation: rise 2s ease 1.6s forwards;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .grain,
+      .player.playing .eq span {
+        animation: none;
+      }
+
+      .wordmark,
+      .tagline,
+      .player,
+      footer {
+        animation-duration: .01s;
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      html,
+      body {
+        overflow: hidden;
+        height: 100%;
+      }
+
+      .stage {
+        padding: 3vh 14px 60px;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      .wordmark {
+        margin-top: 1vh;
+      }
+
+      .player {
+        margin-top: 2vh;
+        padding: 16px 14px;
+      }
+
+      .sleeve-container {
+        height: 38vh;
+      }
+
+      .sleeve-flipper {
+        height: 100%;
+      }
+
+      .sleeve-front {
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(242, 232, 214, 0.15) transparent;
+      }
+
+      .sleeve-front::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .sleeve-front::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .sleeve-front::-webkit-scrollbar-thumb {
+        background: rgba(242, 232, 214, 0.15);
+        border-radius: 4px;
+      }
+
+      .sleeve-front::-webkit-scrollbar-thumb:hover {
+        background: rgba(242, 232, 214, 0.30);
+      }
+
+      .sleeve-tracklist {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px 10px 0;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<canvas id="sky"></canvas>
-<div class="veil"></div>
-<div class="grain"></div>
+  <canvas id="sky"></canvas>
+  <div class="veil"></div>
+  <div class="grain"></div>
 
-<main class="stage">
-  <img class="wordmark" src="melu-logo.png" alt="MELU" />
-  <p class="tagline">When Noise Becomes</p>
+  <main class="stage">
+    <img class="wordmark" src="melu-logo.png" alt="MELU" />
+    <p class="tagline">When Noise Becomes</p>
 
-  <section class="player" id="player" aria-label="MELU music player">
-    <div class="eq" aria-hidden="true">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
+    <section class="player" id="player" aria-label="MELU music player">
+      <div class="eq" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
 
-    <div class="track-meta">
-      <span class="now-label">now playing</span>
-      <span class="track-title" id="trackTitle">—</span>
-    </div>
+      <div class="track-meta">
+        <span class="now-label">now playing</span>
+        <span class="track-title" id="trackTitle">—</span>
+      </div>
 
-    <div class="controls">
-      <button id="lyricToggle" class="lyric-toggle" aria-label="Toggle Lyrics">Lyrics</button>
-      
-      <div class="turntable">
-        <button class="ctrl play" id="playBtn" aria-label="Play">
-          <svg id="playIcon" viewBox="0 0 24 24"><path id="playPath" d="M8 5v14l11-7z"/></svg>
+      <div class="controls">
+        <button id="lyricToggle" class="lyric-toggle" aria-label="Toggle Lyrics">Lyrics</button>
+
+        <div class="turntable">
+          <button class="ctrl play" id="playBtn" aria-label="Play">
+            <svg id="playIcon" viewBox="0 0 24 24">
+              <path id="playPath" d="M8 5v14l11-7z" />
+            </svg>
+          </button>
+          <!-- The Tonearm -->
+          <svg class="tonearm" viewBox="0 0 40 80" aria-hidden="true">
+            <!-- pivot -->
+            <circle cx="27" cy="13" r="5" fill="var(--dust)" />
+            <circle cx="27" cy="13" r="2" fill="var(--black)" />
+            <!-- arm -->
+            <path d="M 27 13 Q 12 40 10 68" fill="none" stroke="var(--dust)" stroke-width="2.5"
+              stroke-linecap="round" />
+            <!-- headshell -->
+            <rect x="4" y="66" width="10" height="7" transform="rotate(-15 9 69.5)" fill="var(--amber)" rx="1" />
+          </svg>
+        </div>
+        <button class="ctrl next" id="nextBtn" aria-label="Next track">
+          <svg viewBox="0 0 24 24">
+            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+          </svg>
         </button>
-        <!-- The Tonearm -->
-        <svg class="tonearm" viewBox="0 0 40 80" aria-hidden="true">
-          <!-- pivot -->
-          <circle cx="27" cy="13" r="5" fill="var(--dust)" />
-          <circle cx="27" cy="13" r="2" fill="var(--black)" />
-          <!-- arm -->
-          <path d="M 27 13 Q 12 40 10 68" fill="none" stroke="var(--dust)" stroke-width="2.5" stroke-linecap="round"/>
-          <!-- headshell -->
-          <rect x="4" y="66" width="10" height="7" transform="rotate(-15 9 69.5)" fill="var(--amber)" rx="1"/>
-        </svg>
       </div>
-      <button class="ctrl next" id="nextBtn" aria-label="Next track">
-        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-      </button>
-    </div>
 
-    <div class="sleeve-container">
-      <div class="sleeve-flipper" id="sleeveFlipper">
-        <div class="sleeve-front">
-          <nav class="sleeve-tracklist" id="tracklist" aria-label="EP tracklist"></nav>
-        </div>
-        <div class="sleeve-back">
-          <div class="lyric-sheet" id="lyricSheet"></div>
+      <div class="sleeve-container">
+        <div class="sleeve-flipper" id="sleeveFlipper">
+          <div class="sleeve-front">
+            <nav class="sleeve-tracklist" id="tracklist" aria-label="EP tracklist"></nav>
+          </div>
+          <div class="sleeve-back">
+            <div class="lyric-sheet" id="lyricSheet"></div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
 
-<footer>
-  <nav class="social">
-    <a href="https://www.soundcloud.com/melunoise" target="_blank" rel="noopener">SoundCloud</a>
-    <a href="https://www.instagram.com/melunoise" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://www.tiktok.com/@melunoise" target="_blank" rel="noopener">TikTok</a>
-    <a href="https://www.abc.net.au/triplejunearthed/artist/melu" target="_blank" rel="noopener">Unearthed</a>
-  </nav>
-  <span class="byline">&copy; Phil Hirvela, Lewi Hirvela <span id="year"></span></span>
-</footer>
-<span class="version">v1.9</span>
+  <footer>
+    <nav class="social">
+      <a href="https://www.soundcloud.com/melunoise" target="_blank" rel="noopener">SoundCloud</a>
+      <a href="https://www.instagram.com/melunoise" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@melunoise" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://www.abc.net.au/triplejunearthed/artist/melu" target="_blank" rel="noopener">Unearthed</a>
+    </nav>
+    <span class="byline">&copy; Phil Hirvela, Lewi Hirvela <span id="year"></span></span>
+  </footer>
+  <span class="version">v1.9</span>
 
-<audio id="audio" preload="auto"></audio>
+  <audio id="audio" preload="auto"></audio>
 
-<script>
-/* =====================================================================
-   1) YOUR PLAYLIST  — read from the file  songs/play.list
-   One track per line, comma delimited:   Title, filename.m4a
-   Example:
-       Sunlit Drift, sunlit-drift.m4a
-       Second Song, second-song.m4a
-   Audio files live in the  songs/  folder beside this file.
-   No need to touch this HTML again — just edit songs/playlist.
-   ===================================================================== */
-const PLAYLIST_URL = "songs/play.list";
-const SONGS_DIR    = "songs/";
-let TRACKS = [];
+  <script>
+    /* =====================================================================
+       1) YOUR PLAYLIST  — read from the file  songs/play.list
+       One track per line, comma delimited:   Title, filename.m4a
+       Example:
+           Sunlit Drift, sunlit-drift.m4a
+           Second Song, second-song.m4a
+       Audio files live in the  songs/  folder beside this file.
+       No need to touch this HTML again — just edit songs/playlist.
+       ===================================================================== */
+    const PLAYLIST_URL = "songs/play.list";
+    const SONGS_DIR = "songs/";
+    let TRACKS = [];
 
-async function loadPlaylist(){
-  try{
-    const res = await fetch(PLAYLIST_URL, { cache: "no-cache" });
-    if(!res.ok) throw new Error("playlist " + res.status);
-    const text = await res.text();
-    TRACKS = text
-      .split("\n")
-      .map(l => l.trim())
-      .filter(l => l && !l.startsWith("#"))   // skip blanks / comments
-      .map(l => {
-        const c = l.indexOf(",");
-        const title = (c === -1 ? l : l.slice(0, c)).trim();
-        const file  = (c === -1 ? "" : l.slice(c + 1)).trim();
-        return { title, src: SONGS_DIR + file };
-      })
-      .filter(t => t.src !== SONGS_DIR);       // drop lines with no file
-  }catch(err){
-    console.error("Could not load playlist:", err);
-    TRACKS = [];
-  }
-}
-
-/* =====================================================================
-   2) PLAYER
-   ===================================================================== */
-const audio   = document.getElementById('audio');
-const playBtn = document.getElementById('playBtn');
-const nextBtn = document.getElementById('nextBtn');
-const playIcon= document.getElementById('playIcon');
-const playPath= document.getElementById('playPath') || (playIcon ? playIcon.querySelector('path') : null);
-const titleEl = document.getElementById('trackTitle');
-const playerEl= document.getElementById('player');
-const tracklistEl = document.getElementById('tracklist');
-const nowLabel = document.querySelector('.now-label');
-const sleeveFlipper = document.getElementById('sleeveFlipper');
-const lyricSheet = document.getElementById('lyricSheet');
-const lyricToggle = document.getElementById('lyricToggle');
-
-const PLAY  = "M8 5v14l11-7z";
-const PAUSE = "M6 5h4v14H6zM14 5h4v14h-4z";
-
-let i = 0;
-let isFlipped = false;
-
-lyricToggle.addEventListener('click', () => {
-  isFlipped = !isFlipped;
-  sleeveFlipper.classList.toggle('flipped', isFlipped);
-  lyricToggle.textContent = isFlipped ? 'Tracks' : 'Lyrics';
-});
-
-function updateActiveTrack(activeIdx){
-  if(!tracklistEl) return;
-  const items = tracklistEl.querySelectorAll('.sleeve-track');
-  items.forEach((item, idx) => {
-    item.classList.toggle('active', idx === activeIdx);
-  });
-}
-
-async function fetchLyrics(filename) {
-  // e.g. "songs/i-will-melu.mp3" -> "lyrics/i-will-melu.txt"
-  const txtPath = filename.replace(/^songs\//i, 'lyrics/').replace(/\.(mp3|m4a|wav)$/i, '.txt');
-  try {
-    const res = await fetch(txtPath, { cache: "no-cache" });
-    if (res.ok) {
-      const text = await res.text();
-      return text.trim();
+    async function loadPlaylist() {
+      try {
+        const res = await fetch(PLAYLIST_URL, { cache: "no-cache" });
+        if (!res.ok) throw new Error("playlist " + res.status);
+        const text = await res.text();
+        TRACKS = text
+          .split("\n")
+          .map(l => l.trim())
+          .filter(l => l && !l.startsWith("#"))   // skip blanks / comments
+          .map(l => {
+            const c = l.indexOf(",");
+            const title = (c === -1 ? l : l.slice(0, c)).trim();
+            const file = (c === -1 ? "" : l.slice(c + 1)).trim();
+            return { title, src: SONGS_DIR + file };
+          })
+          .filter(t => t.src !== SONGS_DIR);       // drop lines with no file
+      } catch (err) {
+        console.error("Could not load playlist:", err);
+        TRACKS = [];
+      }
     }
-  } catch(e) {}
-  return null;
-}
 
-function renderTracklist(){
-  if(!tracklistEl) return;
-  tracklistEl.innerHTML = TRACKS.map((t, idx) => {
-    const num = String(idx + 1).padStart(2, '0');
-    return `<button class="sleeve-track" data-index="${idx}" aria-label="Play ${t.title}">
+    /* =====================================================================
+       2) PLAYER
+       ===================================================================== */
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const playIcon = document.getElementById('playIcon');
+    const playPath = document.getElementById('playPath') || (playIcon ? playIcon.querySelector('path') : null);
+    const titleEl = document.getElementById('trackTitle');
+    const playerEl = document.getElementById('player');
+    const tracklistEl = document.getElementById('tracklist');
+    const nowLabel = document.querySelector('.now-label');
+    const sleeveFlipper = document.getElementById('sleeveFlipper');
+    const lyricSheet = document.getElementById('lyricSheet');
+    const lyricToggle = document.getElementById('lyricToggle');
+
+    const PLAY = "M8 5v14l11-7z";
+    const PAUSE = "M6 5h4v14H6zM14 5h4v14h-4z";
+
+    let i = 0;
+    let isFlipped = false;
+
+    lyricToggle.addEventListener('click', () => {
+      isFlipped = !isFlipped;
+      sleeveFlipper.classList.toggle('flipped', isFlipped);
+      lyricToggle.textContent = isFlipped ? 'Tracks' : 'Lyrics';
+    });
+
+    function updateActiveTrack(activeIdx) {
+      if (!tracklistEl) return;
+      const items = tracklistEl.querySelectorAll('.sleeve-track');
+      items.forEach((item, idx) => {
+        item.classList.toggle('active', idx === activeIdx);
+      });
+    }
+
+    async function fetchLyrics(filename) {
+      // e.g. "songs/i-will-melu.mp3" -> "lyrics/i-will-melu.txt"
+      const txtPath = filename.replace(/^songs\//i, 'lyrics/').replace(/\.(mp3|m4a|wav)$/i, '.txt');
+      try {
+        const res = await fetch(txtPath, { cache: "no-cache" });
+        if (res.ok) {
+          const text = await res.text();
+          return text.trim();
+        }
+      } catch (e) { }
+      return null;
+    }
+
+    function renderTracklist() {
+      if (!tracklistEl) return;
+      tracklistEl.innerHTML = TRACKS.map((t, idx) => {
+        const num = String(idx + 1).padStart(2, '0');
+        return `<button class="sleeve-track" data-index="${idx}" aria-label="Play ${t.title}">
       <span class="sleeve-num">${num}</span>
       <span class="sleeve-title">${t.title}</span>
     </button>`;
-  }).join('');
+      }).join('');
 
-  tracklistEl.querySelectorAll('.sleeve-track').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.getAttribute('data-index'), 10);
-      load(idx, true);
-    });
-  });
-  updateActiveTrack(i);
-}
-
-async function load(index, autoplay){
-  if(!TRACKS.length) return;
-  i = (index + TRACKS.length) % TRACKS.length;   // wrap = playlist loop
-  titleEl.style.opacity = 0;
-  
-  // Fetch lyrics concurrently while fading out title
-  const lyrics = await fetchLyrics(TRACKS[i].src);
-  
-  setTimeout(() => {
-    audio.src = TRACKS[i].src;
-    titleEl.textContent = TRACKS[i].title;
-    titleEl.style.opacity = 1;
-    updateActiveTrack(i);
-    audio.playbackRate = 1;
-    
-    // Update lyrics UI
-    if (lyrics) {
-      const escapeHTML = str => str.replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag] || tag));
-      lyricSheet.innerHTML = escapeHTML(lyrics).replace(/\[(.*?)\]/g, '<strong>$1</strong>');
-      lyricToggle.classList.add('visible');
-    } else {
-      lyricSheet.innerHTML = "";
-      lyricToggle.classList.remove('visible');
-      if (isFlipped) lyricToggle.click(); // flip back if open
-    }
-    
-    if (autoplay) audio.play().catch(()=>{});
-  }, 200);
-}
-
-audio.preservesPitch = false;
-audio.mozPreservesPitch = false;
-audio.webkitPreservesPitch = false;
-
-let spinTimer = null;
-let vinylRotation = 0;
-
-function togglePlay(){
-  if(!TRACKS.length) return;
-  if (audio.paused){ 
-    try { audio.playbackRate = 0.1; } catch(e){}
-    audio.play().catch(()=>{}); 
-    cancelAnimationFrame(spinTimer);
-    let speed = 0.1;
-    function spinUp() {
-      speed += 0.04;
-      if (speed >= 1) {
-        audio.playbackRate = 1;
-      } else {
-        try { audio.playbackRate = speed; } catch(e){}
-        spinTimer = requestAnimationFrame(spinUp);
-      }
-    }
-    spinUp();
-  }
-  else { 
-    cancelAnimationFrame(spinTimer);
-    let speed = audio.playbackRate;
-    function spinDown() {
-      speed -= 0.02;
-      if (speed <= 0.1) {
-        audio.pause();
-        audio.playbackRate = 1;
-        requestAnimationFrame(() => {
-          vinylRotation = Math.round(vinylRotation / 360) * 360;
-          playBtn.style.transform = `rotate(${vinylRotation}deg)`;
+      tracklistEl.querySelectorAll('.sleeve-track').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.getAttribute('data-index'), 10);
+          load(idx, true);
         });
-      } else {
-        try { audio.playbackRate = speed; } catch(e){}
-        spinTimer = requestAnimationFrame(spinDown);
+      });
+      updateActiveTrack(i);
+    }
+
+    async function load(index, autoplay) {
+      if (!TRACKS.length) return;
+      i = (index + TRACKS.length) % TRACKS.length;   // wrap = playlist loop
+      titleEl.style.opacity = 0;
+
+      // Fetch lyrics concurrently while fading out title
+      const lyrics = await fetchLyrics(TRACKS[i].src);
+
+      setTimeout(() => {
+        audio.src = TRACKS[i].src;
+        titleEl.textContent = TRACKS[i].title;
+        titleEl.style.opacity = 1;
+        updateActiveTrack(i);
+        audio.playbackRate = 1;
+
+        // Update lyrics UI
+        if (lyrics) {
+          const escapeHTML = str => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+          lyricSheet.innerHTML = escapeHTML(lyrics).replace(/\[(.*?)\]/g, '<strong>$1</strong>');
+          lyricToggle.classList.add('visible');
+        } else {
+          lyricSheet.innerHTML = "";
+          lyricToggle.classList.remove('visible');
+          if (isFlipped) lyricToggle.click(); // flip back if open
+        }
+
+        if (autoplay) audio.play().catch(() => { });
+      }, 200);
+    }
+
+    audio.preservesPitch = false;
+    audio.mozPreservesPitch = false;
+    audio.webkitPreservesPitch = false;
+
+    let spinTimer = null;
+    let vinylRotation = 0;
+
+    function togglePlay() {
+      if (!TRACKS.length) return;
+      if (audio.paused) {
+        try { audio.playbackRate = 0.1; } catch (e) { }
+        audio.play().catch(() => { });
+        cancelAnimationFrame(spinTimer);
+        let speed = 0.1;
+        function spinUp() {
+          speed += 0.04;
+          if (speed >= 1) {
+            audio.playbackRate = 1;
+          } else {
+            try { audio.playbackRate = speed; } catch (e) { }
+            spinTimer = requestAnimationFrame(spinUp);
+          }
+        }
+        spinUp();
+      }
+      else {
+        cancelAnimationFrame(spinTimer);
+        let speed = audio.playbackRate;
+        function spinDown() {
+          speed -= 0.02;
+          if (speed <= 0.1) {
+            audio.pause();
+            audio.playbackRate = 1;
+            requestAnimationFrame(() => {
+              vinylRotation = Math.round(vinylRotation / 360) * 360;
+              playBtn.style.transform = `rotate(${vinylRotation}deg)`;
+            });
+          } else {
+            try { audio.playbackRate = speed; } catch (e) { }
+            spinTimer = requestAnimationFrame(spinDown);
+          }
+        }
+        spinDown();
       }
     }
-    spinDown();
-  }
-}
 
-function renderVinyl() {
-  if (!audio.paused) {
-    vinylRotation += (audio.playbackRate * 1.5);
-    playBtn.style.transform = `rotate(${vinylRotation}deg)`;
-  }
-  requestAnimationFrame(renderVinyl);
-}
-requestAnimationFrame(renderVinyl);
-
-playBtn.addEventListener('click', togglePlay);
-nextBtn.addEventListener('click', () => load(i + 1, true));
-audio.addEventListener('ended', () => load(i + 1, true));   // auto-advance + loop
-
-function updateNowLabel(text) {
-  if (nowLabel.textContent === text) return;
-  nowLabel.style.opacity = 0;
-  setTimeout(() => {
-    nowLabel.textContent = text;
-    nowLabel.style.opacity = 1;
-  }, 300);
-}
-
-audio.addEventListener('play', () => {
-  if (playPath) playPath.setAttribute('d', PAUSE);
-  playBtn.setAttribute('aria-label','Pause');
-  playerEl.classList.add('playing');
-  updateNowLabel("now playing");
-});
-audio.addEventListener('pause', () => {
-  if (playPath) playPath.setAttribute('d', PLAY);
-  playBtn.setAttribute('aria-label','Play');
-  playerEl.classList.remove('playing');
-  updateNowLabel("now paused");
-});
-
-(async () => {
-  await loadPlaylist();
-  if(TRACKS.length){
-    renderTracklist();
-    load(0, false);
-  }else{
-    titleEl.textContent = "—";
-  }
-})();
-document.getElementById('year').textContent = new Date().getFullYear();
-
-/* =====================================================================
-   3) THE SKY  — drifting nebula, cosmic dust, twinkling stars, planets
-   ===================================================================== */
-const canvas = document.getElementById('sky');
-const ctx = canvas.getContext('2d');
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-// album artwork (Nikitin) blended into the deep field
-const artwork = new Image();
-let artLoaded = false;
-artwork.onload = () => { artLoaded = true; };
-artwork.src = 'artwork.jpg';
-
-let W, H, DPR;
-let stars = [], dust = [], nebulae = [], planets = [], meteors = [];
-const GAL = { cx:0, cy:0, R:0, angle:-0.42, sprites:[] };
-
-function rand(a, b){ return a + Math.random() * (b - a); }
-
-function build(){
-  DPR = Math.min(window.devicePixelRatio || 1, 2);
-  W = canvas.width  = innerWidth  * DPR;
-  H = canvas.height = innerHeight * DPR;
-  canvas.style.width  = innerWidth + 'px';
-  canvas.style.height = innerHeight + 'px';
-
-  const area = innerWidth * innerHeight;
-
-  const cx = W/2, cy = H/2;
-  GAL.cx = cx; GAL.cy = cy;
-  GAL.R = Math.hypot(W, H) * 0.62;        // big enough to cover corners as it turns
-  GAL.angle = -0.42;                      // tilt of the galactic band
-
-  // stellar colour temperatures
-  const STAR_COLORS = [
-    [255,252,246],  // white
-    [206,222,255],  // blue-white
-    [178,202,255],  // blue
-    [255,228,190],  // warm
-    [255,202,148],  // amber
-    [240,198,224]   // faint pink
-  ];
-
-  // cache a soft glow sprite per colour (cheap to stamp each frame)
-  GAL.sprites = STAR_COLORS.map(col => {
-    const c = document.createElement('canvas');
-    const size = 64; c.width = c.height = size;
-    const g = c.getContext('2d');
-    const rg = g.createRadialGradient(size/2,size/2,0, size/2,size/2,size/2);
-    rg.addColorStop(0,    `rgba(${col[0]},${col[1]},${col[2]},1)`);
-    rg.addColorStop(0.22, `rgba(${col[0]},${col[1]},${col[2]},0.35)`);
-    rg.addColorStop(1,    `rgba(${col[0]},${col[1]},${col[2]},0)`);
-    g.fillStyle = rg; g.fillRect(0,0,size,size);
-    return c;
-  });
-
-  // a base point relative to centre, optionally concentrated on the band
-  function bandPoint(inBand){
-    const ca = Math.cos(GAL.angle), sa = Math.sin(GAL.angle);
-    if(!inBand){
-      const ang = rand(0, Math.PI*2);
-      const rad = Math.sqrt(Math.random()) * GAL.R;
-      return { bx: Math.cos(ang)*rad, by: Math.sin(ang)*rad };
+    function renderVinyl() {
+      if (!audio.paused) {
+        vinylRotation += (audio.playbackRate * 1.5);
+        playBtn.style.transform = `rotate(${vinylRotation}deg)`;
+      }
+      requestAnimationFrame(renderVinyl);
     }
-    const u = rand(-GAL.R, GAL.R);                                   // along band
-    const v = (Math.random()+Math.random()+Math.random()-1.5) * GAL.R*0.17; // across band
-    return { bx: u*ca - v*sa, by: u*sa + v*ca };
-  }
+    requestAnimationFrame(renderVinyl);
 
-  // stars — over half clustered into the Milky Way band
-  const starCount = Math.round(area / 1200);
-  stars = Array.from({length: starCount}, () => {
-    const inBand = Math.random() < 0.58;
-    const p = bandPoint(inBand);
-    return {
-      bx: p.bx, by: p.by,
-      r: rand(0.3, inBand ? 1.0 : 1.4) * DPR,
-      base: rand(0.22, 0.9),
-      tw: rand(1.8, 4.8),
-      ph: rand(0, Math.PI*2),
-      ci: Math.floor(Math.pow(Math.random(), 1.3) * STAR_COLORS.length)
-    };
-  });
+    playBtn.addEventListener('click', togglePlay);
+    nextBtn.addEventListener('click', () => load(i + 1, true));
+    audio.addEventListener('ended', () => load(i + 1, true));   // auto-advance + loop
 
-  // glowing dust / nebular knots, also leaning into the band
-  const dustColors = ['242,232,214','231,179,210','138,166,207','224,162,94','176,196,232'];
-  const dustCount = Math.round(area / 32000);
-  dust = Array.from({length: dustCount}, () => {
-    const p = bandPoint(Math.random() < 0.6);
-    return {
-      bx: p.bx, by: p.by,
-      r: rand(10, 46) * DPR,
-      c: dustColors[Math.floor(Math.random()*dustColors.length)],
-      a: rand(0.05, 0.20),
-      tw: rand(0.2, 0.7),
-      ph: rand(0, Math.PI*2)
-    };
-  });
-
-  // big slow nebula clouds — kept subtle now the artwork carries the colour
-  nebulae = [
-    { x: W*0.5,  y: H*0.42, r: Math.max(W,H)*0.55, c:'224,162,94', a:0.05, vx:0.05, vy:0.025 },
-    { x: W*0.2,  y: H*0.62, r: Math.max(W,H)*0.42, c:'231,179,210', a:0.05, vx:-0.04, vy:-0.03 },
-    { x: W*0.82, y: H*0.3,  r: Math.max(W,H)*0.40, c:'138,166,207', a:0.05, vx:0.03, vy:0.04 },
-    { x: W*0.66, y: H*0.72, r: Math.max(W,H)*0.36, c:'120,150,210', a:0.04, vx:-0.03, vy:0.035 }
-  ];
-
-  // distant planets, tucked away
-  planets = [
-    { x: W*0.86, y: H*0.78, r: rand(34,46)*DPR, hue:'231,179,210', lit:-0.5 },
-    { x: W*0.12, y: H*0.18, r: rand(20,28)*DPR, hue:'138,166,207', lit:0.6 }
-  ];
-
-  meteors = [];
-}
-
-function drawNebula(n){
-  const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
-  g.addColorStop(0, `rgba(${n.c},${n.a})`);
-  g.addColorStop(0.5, `rgba(${n.c},${n.a*0.35})`);
-  g.addColorStop(1, `rgba(${n.c},0)`);
-  ctx.fillStyle = g;
-  ctx.fillRect(0,0,W,H);
-}
-
-function drawPlanet(p){
-  // soft body
-  const g = ctx.createRadialGradient(
-    p.x + p.r*p.lit, p.y - p.r*0.3, p.r*0.1,
-    p.x, p.y, p.r
-  );
-  g.addColorStop(0, `rgba(${p.hue},0.85)`);
-  g.addColorStop(0.6, `rgba(${p.hue},0.28)`);
-  g.addColorStop(1, `rgba(${p.hue},0.02)`);
-  ctx.beginPath();
-  ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-  ctx.fillStyle = g;
-  ctx.fill();
-  // faint outer glow
-  ctx.beginPath();
-  ctx.arc(p.x, p.y, p.r*1.5, 0, Math.PI*2);
-  const halo = ctx.createRadialGradient(p.x,p.y,p.r*0.8, p.x,p.y,p.r*1.5);
-  halo.addColorStop(0, `rgba(${p.hue},0.10)`);
-  halo.addColorStop(1, `rgba(${p.hue},0)`);
-  ctx.fillStyle = halo;
-  ctx.fill();
-}
-
-// rotate a base point (relative to centre) by angle a -> screen coords
-function rot(bx, by, a){
-  const c = Math.cos(a), s = Math.sin(a);
-  return { x: GAL.cx + bx*c - by*s, y: GAL.cy + bx*s + by*c };
-}
-
-// the luminous Milky Way band + a brighter galactic core
-function drawBand(angle){
-  ctx.save();
-  ctx.translate(GAL.cx, GAL.cy);
-  ctx.rotate(angle);
-  ctx.scale(1, 0.26);                 // squash a disc into a band
-  const g = ctx.createRadialGradient(0,0,0, 0,0, GAL.R);
-  g.addColorStop(0,    'rgba(214,222,238,0.11)');
-  g.addColorStop(0.35, 'rgba(198,196,226,0.07)');
-  g.addColorStop(0.7,  'rgba(176,170,200,0.03)');
-  g.addColorStop(1,    'rgba(176,170,200,0)');
-  ctx.fillStyle = g;
-  ctx.beginPath(); ctx.arc(0,0,GAL.R,0,Math.PI*2); ctx.fill();
-  ctx.restore();
-
-  const core = rot(-GAL.R*0.12, 0, angle);
-  const cg = ctx.createRadialGradient(core.x,core.y,0, core.x,core.y, GAL.R*0.34);
-  cg.addColorStop(0,   'rgba(255,236,200,0.15)');
-  cg.addColorStop(0.5, 'rgba(231,179,210,0.06)');
-  cg.addColorStop(1,   'rgba(231,179,210,0)');
-  ctx.fillStyle = cg;
-  ctx.beginPath(); ctx.arc(core.x,core.y,GAL.R*0.34,0,Math.PI*2); ctx.fill();
-}
-
-function spawnMeteor(){
-  const fromLeft = Math.random() < 0.5;
-  const ang = rand(0.18, 0.42) * Math.PI;     // shallow downward streak
-  const speed = rand(6, 12) * DPR;
-  meteors.push({
-    x: fromLeft ? rand(0, W*0.4) : rand(W*0.6, W),
-    y: rand(-H*0.1, H*0.4),
-    vx: (fromLeft ? 1 : -1) * Math.cos(ang) * speed,
-    vy: Math.sin(ang) * speed,
-    len: rand(90, 240) * DPR,
-    life: 0, max: rand(50, 90)
-  });
-}
-
-function drawMeteors(){
-  for(let k = meteors.length-1; k>=0; k--){
-    const m = meteors[k];
-    m.x += m.vx; m.y += m.vy; m.life++;
-    const fade = Math.sin(Math.PI * m.life / m.max);
-    const sp = Math.hypot(m.vx, m.vy) || 1;
-    const tx = m.x - m.vx/sp * m.len, ty = m.y - m.vy/sp * m.len;
-    const g = ctx.createLinearGradient(m.x, m.y, tx, ty);
-    g.addColorStop(0,   `rgba(255,248,235,${0.9*fade})`);
-    g.addColorStop(0.4, `rgba(231,179,210,${0.4*fade})`);
-    g.addColorStop(1,   'rgba(231,179,210,0)');
-    ctx.strokeStyle = g;
-    ctx.lineWidth = 1.6 * DPR;
-    ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(tx, ty); ctx.stroke();
-    if(m.life >= m.max || m.x < -400 || m.x > W+400 || m.y > H+400) meteors.splice(k,1);
-  }
-}
-
-let t = 0, rotAng = 0;
-function frame(){
-  t += 0.01;
-  if(!reduceMotion) rotAng += 0.00012;          // the whole galaxy slowly wheels
-  const bandAngle = GAL.angle + rotAng;
-
-  // deep space base gradient
-  const bg = ctx.createLinearGradient(0,0,0,H);
-  bg.addColorStop(0, '#0a0708');
-  bg.addColorStop(0.55, '#070506');
-  bg.addColorStop(1, '#050304');
-  ctx.fillStyle = bg;
-  ctx.fillRect(0,0,W,H);
-
-  // album artwork, cover-fit, gently breathing
-  if(artLoaded){
-    const ar = artwork.width / artwork.height;
-    let dw, dh;
-    if(W/H > ar){ dw = W; dh = W/ar; } else { dh = H; dw = H*ar; }
-    const breathe = reduceMotion ? 1.04 : (1.05 + 0.035*Math.sin(t*0.13));
-    dw *= breathe; dh *= breathe;
-    const dx = (W-dw)/2 + (reduceMotion?0:Math.sin(t*0.06)*W*0.012);
-    const dy = (H-dh)/2 + (reduceMotion?0:Math.cos(t*0.045)*H*0.012);
-    ctx.globalAlpha = 0.6;
-    ctx.drawImage(artwork, dx, dy, dw, dh);
-    ctx.globalAlpha = 1;
-  }
-
-  // nebulae drift
-  nebulae.forEach(n => {
-    if(!reduceMotion){
-      n.x += n.vx; n.y += n.vy;
-      if(n.x < -n.r*0.4 || n.x > W + n.r*0.4) n.vx *= -1;
-      if(n.y < -n.r*0.4 || n.y > H + n.r*0.4) n.vy *= -1;
+    function updateNowLabel(text) {
+      if (nowLabel.textContent === text) return;
+      nowLabel.style.opacity = 0;
+      setTimeout(() => {
+        nowLabel.textContent = text;
+        nowLabel.style.opacity = 1;
+      }, 300);
     }
-    drawNebula(n);
-  });
 
-  ctx.globalCompositeOperation = 'lighter';
-  drawBand(bandAngle);
-  ctx.globalCompositeOperation = 'source-over';
+    audio.addEventListener('play', () => {
+      if (playPath) playPath.setAttribute('d', PAUSE);
+      playBtn.setAttribute('aria-label', 'Pause');
+      playerEl.classList.add('playing');
+      updateNowLabel("now playing");
+    });
+    audio.addEventListener('pause', () => {
+      if (playPath) playPath.setAttribute('d', PLAY);
+      playBtn.setAttribute('aria-label', 'Play');
+      playerEl.classList.remove('playing');
+      updateNowLabel("now paused");
+    });
 
-  planets.forEach(drawPlanet);
+    (async () => {
+      await loadPlaylist();
+      if (TRACKS.length) {
+        renderTracklist();
+        load(0, false);
+      } else {
+        titleEl.textContent = "—";
+      }
+    })();
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-  // soft scrim so the wordmark + player stay readable over the art
-  const scrim = ctx.createRadialGradient(W/2, H*0.48, 0, W/2, H*0.48, Math.max(W,H)*0.5);
-  scrim.addColorStop(0,   'rgba(6,4,5,0.55)');
-  scrim.addColorStop(0.6, 'rgba(6,4,5,0.22)');
-  scrim.addColorStop(1,   'rgba(6,4,5,0)');
-  ctx.fillStyle = scrim;
-  ctx.fillRect(0,0,W,H);
+    /* =====================================================================
+       3) THE SKY  — drifting nebula, cosmic dust, twinkling stars, planets
+       ===================================================================== */
+    const canvas = document.getElementById('sky');
+    const ctx = canvas.getContext('2d');
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  ctx.globalCompositeOperation = 'lighter';
+    // album artwork (Nikitin) blended into the deep field
+    const artwork = new Image();
+    let artLoaded = false;
+    artwork.onload = () => { artLoaded = true; };
+    artwork.src = 'artwork.jpg';
 
-  // dust, turning with the field
-  dust.forEach(d => {
-    const p = rot(d.bx, d.by, bandAngle);
-    const a = d.a * (0.6 + 0.4 * Math.sin(t * d.tw + d.ph));
-    const g = ctx.createRadialGradient(p.x,p.y,0, p.x,p.y,d.r);
-    g.addColorStop(0, `rgba(${d.c},${a})`);
-    g.addColorStop(1, `rgba(${d.c},0)`);
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.arc(p.x,p.y,d.r,0,Math.PI*2); ctx.fill();
-  });
+    let W, H, DPR;
+    let stars = [], dust = [], nebulae = [], planets = [], meteors = [];
+    const GAL = { cx: 0, cy: 0, R: 0, angle: -0.42, sprites: [] };
 
-  // stars, turning with the field, coloured glow + bright core
-  stars.forEach(s => {
-    const p = rot(s.bx, s.by, bandAngle);
-    const a = s.base * (0.4 + 0.6 * Math.sin(t * s.tw + s.ph));
-    const size = s.r * 14;
-    ctx.globalAlpha = Math.max(0, a);
-    ctx.drawImage(GAL.sprites[s.ci], p.x - size/2, p.y - size/2, size, size);
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = `rgba(255,252,245,${Math.min(1, a*1.3)})`;
-    ctx.beginPath(); ctx.arc(p.x, p.y, s.r, 0, Math.PI*2); ctx.fill();
-  });
+    function rand(a, b) { return a + Math.random() * (b - a); }
 
-  // shooting stars
-  if(!reduceMotion){
-    if(Math.random() < 0.012 && meteors.length < 3) spawnMeteor();
-    drawMeteors();
-  }
+    function build() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = canvas.width = innerWidth * DPR;
+      H = canvas.height = innerHeight * DPR;
+      canvas.style.width = innerWidth + 'px';
+      canvas.style.height = innerHeight + 'px';
 
-  ctx.globalCompositeOperation = 'source-over';
-  requestAnimationFrame(frame);
-}
+      const area = innerWidth * innerHeight;
 
-build();
-frame();
+      const cx = W / 2, cy = H / 2;
+      GAL.cx = cx; GAL.cy = cy;
+      GAL.R = Math.hypot(W, H) * 0.62;        // big enough to cover corners as it turns
+      GAL.angle = -0.42;                      // tilt of the galactic band
 
-let resizeTimer;
-addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(build, 200);
-});
-</script>
+      // stellar colour temperatures
+      const STAR_COLORS = [
+        [255, 252, 246],  // white
+        [206, 222, 255],  // blue-white
+        [178, 202, 255],  // blue
+        [255, 228, 190],  // warm
+        [255, 202, 148],  // amber
+        [240, 198, 224]   // faint pink
+      ];
+
+      // cache a soft glow sprite per colour (cheap to stamp each frame)
+      GAL.sprites = STAR_COLORS.map(col => {
+        const c = document.createElement('canvas');
+        const size = 64; c.width = c.height = size;
+        const g = c.getContext('2d');
+        const rg = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+        rg.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},1)`);
+        rg.addColorStop(0.22, `rgba(${col[0]},${col[1]},${col[2]},0.35)`);
+        rg.addColorStop(1, `rgba(${col[0]},${col[1]},${col[2]},0)`);
+        g.fillStyle = rg; g.fillRect(0, 0, size, size);
+        return c;
+      });
+
+      // a base point relative to centre, optionally concentrated on the band
+      function bandPoint(inBand) {
+        const ca = Math.cos(GAL.angle), sa = Math.sin(GAL.angle);
+        if (!inBand) {
+          const ang = rand(0, Math.PI * 2);
+          const rad = Math.sqrt(Math.random()) * GAL.R;
+          return { bx: Math.cos(ang) * rad, by: Math.sin(ang) * rad };
+        }
+        const u = rand(-GAL.R, GAL.R);                                   // along band
+        const v = (Math.random() + Math.random() + Math.random() - 1.5) * GAL.R * 0.17; // across band
+        return { bx: u * ca - v * sa, by: u * sa + v * ca };
+      }
+
+      // stars — over half clustered into the Milky Way band
+      const starCount = Math.round(area / 1200);
+      stars = Array.from({ length: starCount }, () => {
+        const inBand = Math.random() < 0.58;
+        const p = bandPoint(inBand);
+        return {
+          bx: p.bx, by: p.by,
+          r: rand(0.3, inBand ? 1.0 : 1.4) * DPR,
+          base: rand(0.22, 0.9),
+          tw: rand(1.8, 4.8),
+          ph: rand(0, Math.PI * 2),
+          ci: Math.floor(Math.pow(Math.random(), 1.3) * STAR_COLORS.length)
+        };
+      });
+
+      // glowing dust / nebular knots, also leaning into the band
+      const dustColors = ['242,232,214', '231,179,210', '138,166,207', '224,162,94', '176,196,232'];
+      const dustCount = Math.round(area / 32000);
+      dust = Array.from({ length: dustCount }, () => {
+        const p = bandPoint(Math.random() < 0.6);
+        return {
+          bx: p.bx, by: p.by,
+          r: rand(10, 46) * DPR,
+          c: dustColors[Math.floor(Math.random() * dustColors.length)],
+          a: rand(0.05, 0.20),
+          tw: rand(0.2, 0.7),
+          ph: rand(0, Math.PI * 2)
+        };
+      });
+
+      // big slow nebula clouds — kept subtle now the artwork carries the colour
+      nebulae = [
+        { x: W * 0.5, y: H * 0.42, r: Math.max(W, H) * 0.55, c: '224,162,94', a: 0.05, vx: 0.05, vy: 0.025 },
+        { x: W * 0.2, y: H * 0.62, r: Math.max(W, H) * 0.42, c: '231,179,210', a: 0.05, vx: -0.04, vy: -0.03 },
+        { x: W * 0.82, y: H * 0.3, r: Math.max(W, H) * 0.40, c: '138,166,207', a: 0.05, vx: 0.03, vy: 0.04 },
+        { x: W * 0.66, y: H * 0.72, r: Math.max(W, H) * 0.36, c: '120,150,210', a: 0.04, vx: -0.03, vy: 0.035 }
+      ];
+
+      // distant planets, tucked away
+      planets = [
+        { x: W * 0.86, y: H * 0.78, r: rand(34, 46) * DPR, hue: '231,179,210', lit: -0.5 },
+        { x: W * 0.12, y: H * 0.18, r: rand(20, 28) * DPR, hue: '138,166,207', lit: 0.6 }
+      ];
+
+      meteors = [];
+    }
+
+    function drawNebula(n) {
+      const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+      g.addColorStop(0, `rgba(${n.c},${n.a})`);
+      g.addColorStop(0.5, `rgba(${n.c},${n.a * 0.35})`);
+      g.addColorStop(1, `rgba(${n.c},0)`);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    function drawPlanet(p) {
+      // soft body
+      const g = ctx.createRadialGradient(
+        p.x + p.r * p.lit, p.y - p.r * 0.3, p.r * 0.1,
+        p.x, p.y, p.r
+      );
+      g.addColorStop(0, `rgba(${p.hue},0.85)`);
+      g.addColorStop(0.6, `rgba(${p.hue},0.28)`);
+      g.addColorStop(1, `rgba(${p.hue},0.02)`);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+      // faint outer glow
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 1.5, 0, Math.PI * 2);
+      const halo = ctx.createRadialGradient(p.x, p.y, p.r * 0.8, p.x, p.y, p.r * 1.5);
+      halo.addColorStop(0, `rgba(${p.hue},0.10)`);
+      halo.addColorStop(1, `rgba(${p.hue},0)`);
+      ctx.fillStyle = halo;
+      ctx.fill();
+    }
+
+    // rotate a base point (relative to centre) by angle a -> screen coords
+    function rot(bx, by, a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return { x: GAL.cx + bx * c - by * s, y: GAL.cy + bx * s + by * c };
+    }
+
+    // the luminous Milky Way band + a brighter galactic core
+    function drawBand(angle) {
+      ctx.save();
+      ctx.translate(GAL.cx, GAL.cy);
+      ctx.rotate(angle);
+      ctx.scale(1, 0.26);                 // squash a disc into a band
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, GAL.R);
+      g.addColorStop(0, 'rgba(214,222,238,0.11)');
+      g.addColorStop(0.35, 'rgba(198,196,226,0.07)');
+      g.addColorStop(0.7, 'rgba(176,170,200,0.03)');
+      g.addColorStop(1, 'rgba(176,170,200,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(0, 0, GAL.R, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+
+      const core = rot(-GAL.R * 0.12, 0, angle);
+      const cg = ctx.createRadialGradient(core.x, core.y, 0, core.x, core.y, GAL.R * 0.34);
+      cg.addColorStop(0, 'rgba(255,236,200,0.15)');
+      cg.addColorStop(0.5, 'rgba(231,179,210,0.06)');
+      cg.addColorStop(1, 'rgba(231,179,210,0)');
+      ctx.fillStyle = cg;
+      ctx.beginPath(); ctx.arc(core.x, core.y, GAL.R * 0.34, 0, Math.PI * 2); ctx.fill();
+    }
+
+    function spawnMeteor() {
+      const fromLeft = Math.random() < 0.5;
+      const ang = rand(0.18, 0.42) * Math.PI;     // shallow downward streak
+      const speed = rand(6, 12) * DPR;
+      meteors.push({
+        x: fromLeft ? rand(0, W * 0.4) : rand(W * 0.6, W),
+        y: rand(-H * 0.1, H * 0.4),
+        vx: (fromLeft ? 1 : -1) * Math.cos(ang) * speed,
+        vy: Math.sin(ang) * speed,
+        len: rand(90, 240) * DPR,
+        life: 0, max: rand(50, 90)
+      });
+    }
+
+    function drawMeteors() {
+      for (let k = meteors.length - 1; k >= 0; k--) {
+        const m = meteors[k];
+        m.x += m.vx; m.y += m.vy; m.life++;
+        const fade = Math.sin(Math.PI * m.life / m.max);
+        const sp = Math.hypot(m.vx, m.vy) || 1;
+        const tx = m.x - m.vx / sp * m.len, ty = m.y - m.vy / sp * m.len;
+        const g = ctx.createLinearGradient(m.x, m.y, tx, ty);
+        g.addColorStop(0, `rgba(255,248,235,${0.9 * fade})`);
+        g.addColorStop(0.4, `rgba(231,179,210,${0.4 * fade})`);
+        g.addColorStop(1, 'rgba(231,179,210,0)');
+        ctx.strokeStyle = g;
+        ctx.lineWidth = 1.6 * DPR;
+        ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(tx, ty); ctx.stroke();
+        if (m.life >= m.max || m.x < -400 || m.x > W + 400 || m.y > H + 400) meteors.splice(k, 1);
+      }
+    }
+
+    let t = 0, rotAng = 0;
+    function frame() {
+      t += 0.01;
+      if (!reduceMotion) rotAng += 0.00012;          // the whole galaxy slowly wheels
+      const bandAngle = GAL.angle + rotAng;
+
+      // deep space base gradient
+      const bg = ctx.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, '#0a0708');
+      bg.addColorStop(0.55, '#070506');
+      bg.addColorStop(1, '#050304');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // album artwork, cover-fit, gently breathing
+      if (artLoaded) {
+        const ar = artwork.width / artwork.height;
+        let dw, dh;
+        if (W / H > ar) { dw = W; dh = W / ar; } else { dh = H; dw = H * ar; }
+        const breathe = reduceMotion ? 1.04 : (1.05 + 0.035 * Math.sin(t * 0.13));
+        dw *= breathe; dh *= breathe;
+        const dx = (W - dw) / 2 + (reduceMotion ? 0 : Math.sin(t * 0.06) * W * 0.012);
+        const dy = (H - dh) / 2 + (reduceMotion ? 0 : Math.cos(t * 0.045) * H * 0.012);
+        ctx.globalAlpha = 0.6;
+        ctx.drawImage(artwork, dx, dy, dw, dh);
+        ctx.globalAlpha = 1;
+      }
+
+      // nebulae drift
+      nebulae.forEach(n => {
+        if (!reduceMotion) {
+          n.x += n.vx; n.y += n.vy;
+          if (n.x < -n.r * 0.4 || n.x > W + n.r * 0.4) n.vx *= -1;
+          if (n.y < -n.r * 0.4 || n.y > H + n.r * 0.4) n.vy *= -1;
+        }
+        drawNebula(n);
+      });
+
+      ctx.globalCompositeOperation = 'lighter';
+      drawBand(bandAngle);
+      ctx.globalCompositeOperation = 'source-over';
+
+      planets.forEach(drawPlanet);
+
+      // soft scrim so the wordmark + player stay readable over the art
+      const scrim = ctx.createRadialGradient(W / 2, H * 0.48, 0, W / 2, H * 0.48, Math.max(W, H) * 0.5);
+      scrim.addColorStop(0, 'rgba(6,4,5,0.55)');
+      scrim.addColorStop(0.6, 'rgba(6,4,5,0.22)');
+      scrim.addColorStop(1, 'rgba(6,4,5,0)');
+      ctx.fillStyle = scrim;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.globalCompositeOperation = 'lighter';
+
+      // dust, turning with the field
+      dust.forEach(d => {
+        const p = rot(d.bx, d.by, bandAngle);
+        const a = d.a * (0.6 + 0.4 * Math.sin(t * d.tw + d.ph));
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, d.r);
+        g.addColorStop(0, `rgba(${d.c},${a})`);
+        g.addColorStop(1, `rgba(${d.c},0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(p.x, p.y, d.r, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // stars, turning with the field, coloured glow + bright core
+      stars.forEach(s => {
+        const p = rot(s.bx, s.by, bandAngle);
+        const a = s.base * (0.4 + 0.6 * Math.sin(t * s.tw + s.ph));
+        const size = s.r * 14;
+        ctx.globalAlpha = Math.max(0, a);
+        ctx.drawImage(GAL.sprites[s.ci], p.x - size / 2, p.y - size / 2, size, size);
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = `rgba(255,252,245,${Math.min(1, a * 1.3)})`;
+        ctx.beginPath(); ctx.arc(p.x, p.y, s.r, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // shooting stars
+      if (!reduceMotion) {
+        if (Math.random() < 0.012 && meteors.length < 3) spawnMeteor();
+        drawMeteors();
+      }
+
+      ctx.globalCompositeOperation = 'source-over';
+      requestAnimationFrame(frame);
+    }
+
+    build();
+    frame();
+
+    let resizeTimer;
+    addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 200);
+    });
+  </script>
 </body>
+
 </html>
